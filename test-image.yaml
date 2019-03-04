@@ -1,0 +1,19 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  env:
+    - key: JAVA_HOME
+      value: /usr/lib/jvm/java-11-amazon-corretto
+    - key: LANG
+      value: C.utf8
+
+commandTests:
+  - name: "java command is registered using alternatives."
+    command: "java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-11.*"]
+
+  - name: "javac command is registered using alternatives."
+    command: "javac"
+    args: ["-version"]
+    expectedOutput: ["javac 11.0.*"]
