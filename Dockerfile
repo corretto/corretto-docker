@@ -22,5 +22,4 @@ RUN curl -O $host/$rpm \
     && yum install -y fontconfig \
     && yum clean all
 
-ENV LANG C.utf8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
