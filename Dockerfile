@@ -2,9 +2,8 @@ FROM amazonlinux:2
 
 ARG rpm=java-11-amazon-corretto-devel-11.0.2.9-2.x86_64.rpm
 ARG host=https://d2jnoze5tfhthg.cloudfront.net
-ARG key=7E2223C5.pub
 
-COPY $key .
+COPY 7E2223C5.pub .
 
 # In addition to installing the RPM, we also install
 # fontconfig. The folks who manage the docker hub's
@@ -15,10 +14,10 @@ COPY $key .
 # See:
 #  https://github.com/docker-library/official-images/blob/master/test/tests/java-uimanager-font/container.java
 RUN curl -O $host/$rpm \
-    && rpm --import $key \
+    && rpm --import 7E2223C5.pub \
     && rpm -K $rpm \
     && rpm -i $rpm \
-    && rm $key $rpm \
+    && rm 7E2223C5.pub $rpm \
     && yum install -y fontconfig \
     && yum clean all
 
