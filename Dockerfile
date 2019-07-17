@@ -1,8 +1,8 @@
 FROM amazonlinux:2
 
-ARG rpm=java-11-amazon-corretto-devel-11.0.3.7-1.x86_64.rpm
-ARG path=https://d3pxv6yz143wms.cloudfront.net/11.0.3.7.1
-ARG key=F6E978D911927C6B6ADBE616A3BBAC10F8152B28
+ARG rpm=java-11-amazon-corretto-devel-11.0.4.11-1.x86_64.rpm
+ARG path=https://d3pxv6yz143wms.cloudfront.net/11.0.4.11.1
+ARG key=4FF3DA639731F095833505A25A812B5B67F4FCB4
 
 # In addition to installing the RPM, we also install
 # fontconfig. The folks who manage the docker hub's
