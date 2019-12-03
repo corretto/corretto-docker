@@ -2,5 +2,9 @@ sudo: required
 services:
   - docker
 
+env:
+- DOCKER_FILE=Dockerfile
+- DOCKER_FILE=contrib/Dockerfile-debian
+
 script:
   - ./test-image.sh

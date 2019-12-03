@@ -21,7 +21,8 @@ wget -N \
 chmod +x build/tool/container-structure-test-${cst_ostype}-amd64
 
 # 2. Build the docker image.
-docker build --tag corretto-11 .
+# You can set $1 to a Dockerfile to test interractively
+docker build -f ${1-${DOCKER_FILE}} --tag corretto-11 .
 
 # 3. Test using container-structure-test.
 build/tool/container-structure-test-${cst_ostype}-amd64 test \
