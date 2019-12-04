@@ -4,7 +4,7 @@ services:
 
 env:
 - DOCKER_FILE=Dockerfile
-- DOCKER_FILE=contrib/Dockerfile-debian
+- DOCKER_FILE=contrib/debian/Dockerfile
 
 script:
   - ./test-image.sh
