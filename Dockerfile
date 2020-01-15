@@ -1,14 +1,14 @@
 FROM amazonlinux:2
 
 # x86_64 args
-ARG rpm_x64=java-11-amazon-corretto-devel-11.0.5.10-1.x86_64.rpm
-ARG path_x64=https://d3pxv6yz143wms.cloudfront.net/11.0.5.10.1
-ARG key_x64=13817E35D6AA26BB2D85267712EABAC5209DDBC0 
+ARG rpm_x64=java-11-amazon-corretto-devel-11.0.6.10-1.x86_64.rpm
+ARG path_x64=https://corretto.aws/downloads/resources/11.0.6.10.1
+ARG key_x64=6DC3636DAE534049C8B94623A122542AB04F24E3
 
 # aarch64 args
-ARG rpm_aarch64=java-11-amazon-corretto-devel-11.0.5.10-1.aarch64.rpm
-ARG path_aarch64=https://d3pxv6yz143wms.cloudfront.net/11.0.5.10.1
-ARG key_aarch64=13817E35D6AA26BB2D85267712EABAC5209DDBC0 
+ARG rpm_aarch64=java-11-amazon-corretto-devel-11.0.6.10-1.aarch64.rpm
+ARG path_aarch64=https://corretto.aws/downloads/resources/11.0.6.10.1
+ARG key_aarch64=6DC3636DAE534049C8B94623A122542AB04F24E3
 
 # In addition to installing the RPM, we also install
 # fontconfig. The folks who manage the docker hub's
