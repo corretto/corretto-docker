@@ -1,0 +1,10 @@
+sudo: required
+services:
+  - docker
+
+env:
+- DOCKER_FILE=Dockerfile
+- DOCKER_FILE=contrib/debian/Dockerfile
+
+script:
+  - ./test-image.sh
