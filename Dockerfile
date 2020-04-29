@@ -23,6 +23,7 @@ RUN set -eux \
     && curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo \
     && grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo \
     && yum install -y java-11-amazon-corretto-devel-$version \
+    && (find /usr/lib/jvm/java-11-amazon-corretto -name src.zip -delete || true) \
     && yum install -y fontconfig \
     && yum clean all
 
