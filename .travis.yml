@@ -3,8 +3,14 @@ services:
   - docker
 
 env:
-- DOCKER_FILE=Dockerfile
-- DOCKER_FILE=contrib/debian/Dockerfile
+- DOCKER_FILE=11/jre/alpine/Dockerfile
+- DOCKER_FILE=11/jdk/al2/Dockerfile
+- DOCKER_FILE=11/jdk/debian/Dockerfile
+- DOCKER_FILE=11/jdk/alpine/Dockerfile
+- DOCKER_FILE=8/jre/alpine/Dockerfile
+- DOCKER_FILE=8/jdk/al2/Dockerfile
+- DOCKER_FILE=8/jdk/debian/Dockerfile
+- DOCKER_FILE=8/jdk/alpine/Dockerfile
 
 script:
   - ./test-image.sh
