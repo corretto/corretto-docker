@@ -27,4 +27,5 @@ RUN set -eux \
     && yum install -y fontconfig \
     && yum clean all
 
+ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto

@@ -18,5 +18,6 @@ jdk.jdwp.agent,jdk.pack,jdk.scripting.nashorn.shell" \
 
 FROM alpine:latest
 COPY --from=0 /temp/java-11-amazon-corretto /usr/lib/jvm/java-11-amazon-corretto
+ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
 ENV PATH=$PATH:/usr/lib/jvm/java-11-amazon-corretto/bin
