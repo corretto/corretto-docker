@@ -51,4 +51,5 @@ RUN set -eux; \
 	rm -rf $GNUPGHOME corretto.asc $deb; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false curl dirmngr gnupg
 
+ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto

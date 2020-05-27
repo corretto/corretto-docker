@@ -1,5 +1,10 @@
 schemaVersion: "2.0.0"
 
+metadataTest:
+  env:
+    - key: LANG
+      value: C.UTF-8
+
 commandTests:
   - name: "java command is registered using alternatives."
     command: "java"
