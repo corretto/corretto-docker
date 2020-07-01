@@ -21,3 +21,4 @@ Directory: 11/jdk/alpine
 Tags: 11-alpine-jre, 11.0.7-alpine-jre
 Architectures: amd64
 Directory: 11/jre/alpine
+
