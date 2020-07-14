@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ARG version=11.0.7.10.1
+ARG version=11.0.8.10.1
 
 RUN wget -O /etc/apk/keys/amazoncorretto.rsa.pub https://apk.corretto.aws/amazoncorretto.rsa.pub && \
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
