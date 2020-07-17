@@ -23,7 +23,7 @@ chmod +x build/tool/container-structure-test-${cst_ostype}-amd64
 
 # 2. Build the docker image.
 # You can set $1 to a Dockerfile to test interractively
-docker build -f ${1-${DOCKER_FILE}} --tag corretto-docker .
+docker build -f ${1-${DOCKER_FILE}} --tag corretto-docker `dirname ${1-$DOCKER_FILE}}`
 
 corretto_version=$(echo ${1-${DOCKER_FILE}} | rev | cut -d'/' -f4 | rev)
 install=$(echo ${1-${DOCKER_FILE}} | rev | cut -d'/' -f3 | rev)

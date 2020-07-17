@@ -2,6 +2,7 @@ FROM alpine:latest
 
 ARG version=8.262.10.2
 
+ADD THIRD-PARTY-LICENSES /
 RUN wget -O /etc/apk/keys/amazoncorretto.rsa.pub https://apk.corretto.aws/amazoncorretto.rsa.pub && \
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
     apk add --no-cache amazon-corretto-8-jre=$version-r0
