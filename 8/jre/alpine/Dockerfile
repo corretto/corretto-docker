@@ -1,6 +1,6 @@
 FROM alpine:3.12
 
-ARG version=8.262.10.2
+ARG version=8.265.01.2
 
 ADD THIRD-PARTY-LICENSES /
 RUN wget -O /etc/apk/keys/amazoncorretto.rsa.pub https://apk.corretto.aws/amazoncorretto.rsa.pub && \
