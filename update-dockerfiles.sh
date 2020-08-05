@@ -42,6 +42,8 @@ if [ ! -z "${CORRETTO_11_MUSL_LINUX}" ]; then
     sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_11_MUSL_LINUX}/g" ./11/jre/alpine/Dockerfile
     jdk_version=$(echo ${CORRETTO_11_MUSL_LINUX} | cut -d'.' -f1-3)
     sed -i "" "s/11\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" .tags
+
+    sed -i "" "s/11\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" README.md
 fi
 
 if [ ! -z "${CORRETTO_8_MUSL_LINUX}" ]; then
@@ -49,6 +51,8 @@ if [ ! -z "${CORRETTO_8_MUSL_LINUX}" ]; then
     sed -i "" "s/^ARG version=.*/ARG version=${CORRETTO_8_MUSL_LINUX}/g" ./8/jre/alpine/Dockerfile
     jdk_version=$(echo ${CORRETTO_8_MUSL_LINUX} | cut -d'.' -f2)
     sed -i "" "s/8u[0-9]*-alpine/8u${jdk_version}-alpine/g" .tags
+
+    sed -i "" "s/8u[0-9]*-alpine/8u${jdk_version}-alpine/g" README.md
 fi
 
 
@@ -59,6 +63,9 @@ if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./11/jdk/al2/Dockerfile
     sed -i "" "s/11\.0\.[0-9]*,/${jdk_version},/g" .tags
     sed -i "" "s/11\.0\.[0-9]*-al2/${jdk_version}-al2/g" .tags
+
+    sed -i "" "s/11\.0\.[0-9]*,/${jdk_version},/g" README.md
+    sed -i "" "s/11\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
@@ -68,4 +75,7 @@ if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     sed -i "" "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2/Dockerfile
     sed -i "" "s/8u[0-9]*,/8u${jdk_version},/g" .tags
     sed -i "" "s/8u[0-9]*-al2/8u${jdk_version}-al2/g" .tags
+
+    sed -i "" "s/8u[0-9]*,/8u${jdk_version},/g" README.md
+    sed -i "" "s/8u[0-9]*-al2/8u${jdk_version}-al2/g" README.md
 fi
