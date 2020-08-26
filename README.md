@@ -27,20 +27,14 @@ You can view the available tags, run
 aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-name amazoncorretto | jq -r '.imageIds[] | .imageTag'
 ```
 
-Alpine based docker images are also available at [amazoncorretto/amazoncorretto](https://hub.docker.com/repository/docker/amazoncorretto/amazoncorretto)
-
-To pull the images run
-```
-docker pull amazoncorretto/amazoncorretto:11-alpine
-```
 
 # Supported Tags
 * [8, 8u265, 8u265-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
 * [11, 11.0.8, 11.0.8-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine, 8u265-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/repository/docker/amazoncorretto/amazoncorretto)
-* [8-alpine-jre, 8u265-alpine-jre](https://hub.docker.com/repository/docker/amazoncorretto/amazoncorretto)
-* [11-alpine, 11.0.8-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/repository/docker/amazoncorretto/amazoncorretto)
-* [11-alpine-jre, 11.0.8-alpine-jre](https://hub.docker.com/repository/docker/amazoncorretto/amazoncorretto)
+* [8-alpine, 8u265-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine-jre, 8u265-alpine-jre](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine, 11.0.8-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine-jre, 11.0.8-alpine-jre](https://hub.docker.com/_/amazoncorretto)
 
 # Building
 To build the docker images, you can use the following command.
