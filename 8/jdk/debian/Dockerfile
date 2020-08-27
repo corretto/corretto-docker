@@ -1,13 +1,13 @@
 FROM debian:buster-slim
 
 # x86_64 args
-ARG deb_x64=java-1.8.0-amazon-corretto-jdk_8.242.08-1_amd64.deb
-ARG path_x64=https://corretto.aws/downloads/resources/8.242.08.1
+ARG deb_x64=java-1.8.0-amazon-corretto-jdk_8.265.01-1_amd64.deb
+ARG path_x64=https://corretto.aws/downloads/resources/8.265.01.1
 ARG key_x64=6DC3636DAE534049C8B94623A122542AB04F24E3
 
 # aarch64 args
-ARG deb_aarch64=java-1.8.0-amazon-corretto-jdk_8.242.08-1_arm64.deb
-ARG path_aarch64=https://corretto.aws/downloads/resources/8.242.08.1
+ARG deb_aarch64=java-1.8.0-amazon-corretto-devel-1.8.0_265.b01-1.x86_64.rpm
+ARG path_aarch64=https://corretto.aws/downloads/resources/8.265.01.1
 ARG key_aarch64=6DC3636DAE534049C8B94623A122542AB04F24E3
 
 # In addition to installing the DEB, we also install

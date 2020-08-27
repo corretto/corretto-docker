@@ -1,13 +1,13 @@
 FROM debian:buster-slim
 
 # x86_64 args
-ARG deb_x64=java-11-amazon-corretto-jdk_11.0.5.10-1_amd64.deb
-ARG path_x64=https://d3pxv6yz143wms.cloudfront.net/11.0.5.10.1
+ARG deb_x64=java-11-amazon-corretto-jdk_11.0.8.10-1_amd64.deb
+ARG path_x64=https://corretto.aws/downloads/resources/11.0.8.10.1
 ARG key_x64=E8EB406377AD2B9E9A4765D19CB3BC6FF6C9FC19
 
 # aarch64 args
-ARG deb_aarch64=java-11-amazon-corretto-jdk_11.0.5.10-1_arm64.deb
-ARG path_aarch64=https://d3pxv6yz143wms.cloudfront.net/11.0.5.10.1
+ARG deb_aarch64=java-11-amazon-corretto-devel-11.0.8.10-1.x86_64.rpm
+ARG path_aarch64=https://corretto.aws/downloads/resources/11.0.8.10.1
 ARG key_aarch64=E8EB406377AD2B9E9A4765D19CB3BC6FF6C9FC19
 
 # In addition to installing the DEB, we also install
