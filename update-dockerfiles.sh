@@ -61,6 +61,7 @@ if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     jdk_build=$(echo ${CORRETTO_11_GENERIC_LINUX} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_11_GENERIC_LINUX} | cut -d'.' -f5)
     sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./11/jdk/al2/Dockerfile
+    sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./11/jdk/debian/Dockerfile
     sed -i "" "s/11\.0\.[0-9]*,/${jdk_version},/g" .tags
     sed -i "" "s/11\.0\.[0-9]*-al2/${jdk_version}-al2/g" .tags
 
@@ -73,6 +74,7 @@ if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     jdk_build=$(echo ${CORRETTO_8_GENERIC_LINUX} | cut -d'.' -f3)
     corretto_version=$(echo ${CORRETTO_8_GENERIC_LINUX} | cut -d'.' -f4)
     sed -i "" "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2/Dockerfile
+    sed -i "" "s/ARG version=.*/ARG version=8.${jdk_version}.${jdk_build}-${corretto_version}/g" ./8/jdk/debian/Dockerfile
     sed -i "" "s/8u[0-9]*,/8u${jdk_version},/g" .tags
     sed -i "" "s/8u[0-9]*-al2/8u${jdk_version}-al2/g" .tags
 
