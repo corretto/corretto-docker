@@ -7,6 +7,35 @@ usage() {
     echo "Update the dockerfiles to use the version specified above."
 }
 
+update_musl_linux() {
+    CORRETTO_VERSION=$1
+    MAJOR_RELEASE=$2
+
+    sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/jdk/alpine/Dockerfile
+    sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/jre/alpine/Dockerfile
+    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" .tags
+
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" README.md
+}
+
+update_generic_linux() {
+    CORRETTO_VERSION=$1
+    MAJOR_RELEASE=$2
+    
+    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
+    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
+    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
+    sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2/Dockerfile
+    sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/debian/Dockerfile
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*,/${jdk_version},/g" .tags
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-al2/${jdk_version}-al2/g" .tags
+
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*,/${jdk_version},/g" README.md
+    sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md
+
+}
+
 while [ "$1" != "" ]; do
     case $1 in 
         --corretto-8-generic-linux ) 
@@ -25,6 +54,14 @@ while [ "$1" != "" ]; do
             shift
             CORRETTO_11_MUSL_LINUX=$1
             ;;
+        --corretto-15-musl-linux )
+            shift
+            CORRETTO_15_MUSL_LINUX=$1
+            ;;
+        --corretto-15-generic-linux )
+            shift
+            CORRETTO_15_GENERIC_LINUX=$1
+            ;;
         --help )
             usage
             exit
@@ -38,12 +75,11 @@ while [ "$1" != "" ]; do
 done
 
 if [ ! -z "${CORRETTO_11_MUSL_LINUX}" ]; then
-    sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_11_MUSL_LINUX}/g" ./11/jdk/alpine/Dockerfile
-    sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_11_MUSL_LINUX}/g" ./11/jre/alpine/Dockerfile
-    jdk_version=$(echo ${CORRETTO_11_MUSL_LINUX} | cut -d'.' -f1-3)
-    sed -i "" "s/11\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" .tags
+    update_musl_linux ${CORRETTO_11_MUSL_LINUX} 11
+fi
 
-    sed -i "" "s/11\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" README.md
+if [ ! -z "${CORRETTO_15_MUSL_LINUX}" ]; then
+    update_musl_linux ${CORRETTO_15_MUSL_LINUX} 15
 fi
 
 if [ ! -z "${CORRETTO_8_MUSL_LINUX}" ]; then
@@ -57,16 +93,11 @@ fi
 
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
-    jdk_version=$(echo ${CORRETTO_11_GENERIC_LINUX} | cut -d'.' -f1-3)
-    jdk_build=$(echo ${CORRETTO_11_GENERIC_LINUX} | cut -d'.' -f4)
-    corretto_version=$(echo ${CORRETTO_11_GENERIC_LINUX} | cut -d'.' -f5)
-    sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./11/jdk/al2/Dockerfile
-    sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./11/jdk/debian/Dockerfile
-    sed -i "" "s/11\.0\.[0-9]*,/${jdk_version},/g" .tags
-    sed -i "" "s/11\.0\.[0-9]*-al2/${jdk_version}-al2/g" .tags
+    update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
+fi
 
-    sed -i "" "s/11\.0\.[0-9]*,/${jdk_version},/g" README.md
-    sed -i "" "s/11\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md
+if [ ! -z "${CORRETTO_15_GENERIC_LINUX}" ]; then
+    update_generic_linux ${CORRETTO_15_GENERIC_LINUX} 15
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then

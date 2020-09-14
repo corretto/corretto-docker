@@ -27,7 +27,7 @@ function create_tag() {
     TAGS=$3
     if [[ "$ARCHITECTURE" =~ .*"$SUPPORTED_ARCHITECTURE".* ]]; then
         for TAG in ${TAGS//,/ }; do
-            docker build $DIRECTORY -t $REPOSITORY:$TAG -q
+            docker build $DIRECTORY -t $REPOSITORY:$TAG
             CREATED_TAGS+=("$REPOSITORY:$TAG")
         done
 
