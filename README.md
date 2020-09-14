@@ -34,7 +34,8 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 * [8-alpine, 8u265-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [8-alpine-jre, 8u265-alpine-jre](https://hub.docker.com/_/amazoncorretto)
 * [11-alpine, 11.0.8-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine-jre, 11.0.8-alpine-jre](https://hub.docker.com/_/amazoncorretto)
+* [15, 15-al2-jdk, 15-al2-full](https://hub.docker.com/r/amazoncorretto/amazoncorretto)
+* [15-alpine, 15-alpine-full, 15-alpine-jdk](https://hub.docker.com/r/amazoncorretto/amazoncorretto)
 
 # Building
 To build the docker images, you can use the following command.

@@ -30,4 +30,4 @@ install=$(echo ${1-${DOCKER_FILE}} | rev | cut -d'/' -f3 | rev)
 # 3. Test using container-structure-test.
 build/tool/container-structure-test-${cst_ostype}-amd64 test \
     --image corretto-docker \
-    --config test-image-corretto${corretto_version}-${install}.yaml
+    --config test/test-image-corretto${corretto_version}-${install}.yaml
