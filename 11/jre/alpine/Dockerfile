@@ -6,7 +6,7 @@ ARG version=11.0.8.10.1
 # The Corretto team will update this file but you may see a few days' delay.
 RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads/resources/licenses/alpine/THIRD-PARTY-LICENSES-20200824.tar.gz && \
     echo "82f3e50e71b2aee21321b2b33de372feed5befad6ef2196ddec92311bc09becb  /THIRD-PARTY-LICENSES-20200824.tar.gz" | sha256sum -c - && \
-    tar xvzf THIRD-PARTY-LICENSES-20200824.tar.gz && \
+    tar x -ovzf THIRD-PARTY-LICENSES-20200824.tar.gz && \
     rm -rf THIRD-PARTY-LICENSES-20200824.tar.gz && \
     wget -O /etc/apk/keys/amazoncorretto.rsa.pub https://apk.corretto.aws/amazoncorretto.rsa.pub && \
     SHA_SUM="6cfdf08be09f32ca298e2d5bd4a359ee2b275765c09b56d514624bf831eafb91" && \
@@ -27,6 +27,7 @@ jdk.jdwp.agent,jdk.pack,jdk.scripting.nashorn.shell,jdk.jcmd,jdk.jfr" \
 
 FROM alpine:3.12
 COPY --from=0 /temp/java-11-amazon-corretto /usr/lib/jvm/java-11-amazon-corretto
+COPY --from=0 /licenses /licenses
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
 ENV PATH=$PATH:/usr/lib/jvm/java-11-amazon-corretto/bin
