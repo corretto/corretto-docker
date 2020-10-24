@@ -8,18 +8,24 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [8, 11, 15]
-        platform: [alpine, al2, debian]
+        version: [ 8, 11, 15 ]
+        package: [ jdk ]
+        platform: [ alpine, al2, debian ]
+        include:
+          - version: 15
+            package: slim
+            platform: alpine
+          - version: 15
+            package: slim
+            platform: al2
+          - version: 15
+            package: slim
+            platform: debian
+          - version: 8
+            package: jre
+            platform: alpine
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Test Corretto-${{ matrix.version }} on ${{ matrix.platform }}
-        run: ./bin/test-image.sh ${{ matrix.version }}/jdk/${{ matrix.platform }}/Dockerfile
-  verify-corretto-jre:
-    name: Verify Corretto JRE Images
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Test Corretto-8 JRE on Alpine
-        run: ./bin/test-image.sh 8/jre/alpine/Dockerfile
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile"
