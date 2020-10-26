@@ -12,7 +12,9 @@ update_musl_linux() {
     MAJOR_RELEASE=$2
 
     sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/jdk/alpine/Dockerfile
-    sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/jre/alpine/Dockerfile
+    if [ -f ./${MAJOR_RELEASE}/jre/alpine/Dockerfile ]; then
+        sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/jre/alpine/Dockerfile
+    fi
     jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
     sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" .tags
 
