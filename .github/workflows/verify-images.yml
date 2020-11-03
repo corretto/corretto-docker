@@ -1,0 +1,43 @@
+name: Verify Docker Images
+
+on: [push, pull_request]
+
+jobs: 
+    verify-corretto-8:
+        name: Verify Corretto 8
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Test Alpine 
+              run: ./bin/test-image.sh 8/jdk/alpine/Dockerfile
+            - name: Test AL2
+              run: ./bin/test-image.sh 8/jdk/al2/Dockerfile
+            - name: Test ubuntu
+              run: ./bin/test-image.sh 8/jdk/debian/Dockerfile
+            - name: Test Alpine JRE
+              run: ./bin/test-image.sh 8/jre/alpine/Dockerfile 
+    verify-corretto-11:
+        name: Verify Corretto 11
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Test Alpine 
+              run: ./bin/test-image.sh 11/jdk/alpine/Dockerfile
+            - name: Test AL2
+              run: ./bin/test-image.sh 11/jdk/al2/Dockerfile
+            - name: Test ubuntu
+              run: ./bin/test-image.sh 11/jdk/debian/Dockerfile
+    verify-corretto-15:
+        name: Verify Corretto 15
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Test Alpine 
+              run: ./bin/test-image.sh 15/jdk/alpine/Dockerfile
+            - name: Test AL2
+              run: ./bin/test-image.sh 15/jdk/al2/Dockerfile
+            - name: Test ubuntu
+              run: ./bin/test-image.sh 15/jdk/debian/Dockerfile
