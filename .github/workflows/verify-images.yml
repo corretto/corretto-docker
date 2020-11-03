@@ -3,41 +3,23 @@ name: Verify Docker Images
 on: [push, pull_request]
 
 jobs: 
-    verify-corretto-8:
-        name: Verify Corretto 8
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Test Alpine 
-              run: ./bin/test-image.sh 8/jdk/alpine/Dockerfile
-            - name: Test AL2
-              run: ./bin/test-image.sh 8/jdk/al2/Dockerfile
-            - name: Test ubuntu
-              run: ./bin/test-image.sh 8/jdk/debian/Dockerfile
-            - name: Test Alpine JRE
-              run: ./bin/test-image.sh 8/jre/alpine/Dockerfile 
-    verify-corretto-11:
-        name: Verify Corretto 11
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Test Alpine 
-              run: ./bin/test-image.sh 11/jdk/alpine/Dockerfile
-            - name: Test AL2
-              run: ./bin/test-image.sh 11/jdk/al2/Dockerfile
-            - name: Test ubuntu
-              run: ./bin/test-image.sh 11/jdk/debian/Dockerfile
-    verify-corretto-15:
-        name: Verify Corretto 15
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v2
-            - name: Test Alpine 
-              run: ./bin/test-image.sh 15/jdk/alpine/Dockerfile
-            - name: Test AL2
-              run: ./bin/test-image.sh 15/jdk/al2/Dockerfile
-            - name: Test ubuntu
-              run: ./bin/test-image.sh 15/jdk/debian/Dockerfile
+  verify-corretto:
+    name: Verify Corretto JDK Images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [8, 11, 15]
+        platform: [alpine, al2, debian]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto-${{ matrix.version }} on ${{ matrix.platform }}
+        run: ./bin/test-image.sh ${{ matrix.version }}/jdk/${{ matrix.platform }}/Dockerfile
+  verify-corretto-jre:
+    name: Verify Corretto JRE Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto-8 JRE on Alpine
+        run: ./bin/test-image.sh 8/jre/alpine/Dockerfile
