@@ -1,4 +1,4 @@
-# Corretto Docker [![Build Status](https://travis-ci.org/corretto/corretto-docker.svg?branch=master)](https://travis-ci.org/corretto/corretto-docker)
+# Corretto Docker ![Build Status](https://github.com/corretto/corretto-docker/workflows/Verify%20Docker%20Images/badge.svg)
 
 Master repository where Dockerfiles for Amazon Corretto are hosted. These docker files are used to build images for [Amazon Corretto Offical Images](https://hub.docker.com/_/amazoncorretto) and ECR images.
 
