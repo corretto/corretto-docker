@@ -29,10 +29,10 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 
 
 # Supported Tags
-* [8, 8u272, 8u272-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
+* [8, 8u275, 8u275-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
 * [11, 11.0.9, 11.0.9-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine, 8u272-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine-jre, 8u272-alpine-jre](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine, 8u275-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine-jre, 8u275-alpine-jre](https://hub.docker.com/_/amazoncorretto)
 * [11-alpine, 11.0.9-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [15, 15-al2-jdk, 15-al2-full](https://hub.docker.com/r/amazoncorretto/amazoncorretto)
 * [15-alpine, 15-alpine-full, 15-alpine-jdk](https://hub.docker.com/r/amazoncorretto/amazoncorretto)
