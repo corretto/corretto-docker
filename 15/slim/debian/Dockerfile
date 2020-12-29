@@ -20,9 +20,7 @@ RUN set -ux \
     && add-apt-repository 'deb https://apt.corretto.aws stable main' \
     && mkdir -p /usr/share/man/man1 || true \
     && apt-get update \
-    && apt-get install -y java-15-amazon-corretto-jdk=1:$version \
-    && apt-get install -y binutils-i586-linux-gnu \
-    && ln -s /usr/bin/i686-linux-gnu-objcopy /usr/bin/objcopy \
+    && apt-get install -y java-15-amazon-corretto-jdk=1:$version binutils \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
             curl gnupg software-properties-common \
     && for line in $(java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done \
