@@ -18,7 +18,7 @@ RUN set -ux \
         curl ca-certificates gnupg software-properties-common fontconfig \
     && curl -fL https://apt.corretto.aws/corretto.key | apt-key add - \
     && add-apt-repository 'deb https://apt.corretto.aws stable main' \
-    && mkdir -p /usr/share/man/man1 || true \
+    && mkdir -p /usr/share/man/man1 \
     && apt-get update \
     && apt-get install -y java-15-amazon-corretto-jdk=1:$version binutils \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
