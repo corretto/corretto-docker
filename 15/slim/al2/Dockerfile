@@ -29,7 +29,7 @@ RUN set -eux \
     && (find /usr/lib/jvm/java-15-amazon-corretto -name src.zip -delete || true) \
     && yum install -y fontconfig \
     && yum install -y binutils \
-    && for line in $(java --list-modules); do echo -n "${line/@15/,}" >> modules-comma-separated.txt; done \
+    && for line in $(java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done \
     && jlink --add-modules "$(< modules-comma-separated.txt)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && rm -rf /usr/lib/jvm/java-15-amazon-corretto \
     && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto \

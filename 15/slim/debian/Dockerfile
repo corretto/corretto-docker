@@ -25,7 +25,7 @@ RUN set -eux \
     && ln -s /usr/bin/i686-linux-gnu-objcopy /usr/bin/objcopy \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
             curl gnupg software-properties-common \
-    && for line in $(java --list-modules); do echo -n "${line%@15}," >> modules-comma-separated.txt; done \
+    && for line in $(java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done \
     && jlink --add-modules "$(cat modules-comma-separated.txt)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && rm -rf /usr/lib/jvm/java-15-amazon-corretto \
     && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto

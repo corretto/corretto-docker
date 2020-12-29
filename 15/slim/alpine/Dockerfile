@@ -17,7 +17,7 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
     apk add --no-cache amazon-corretto-15=$version-r0 && \
     apk add --no-cache binutils && \
-    for line in $(/usr/lib/jvm/default-jvm/bin/java --list-modules); do echo -n "${line/@15/,}" >> modules-comma-separated.txt; done && \
+    for line in $(/usr/lib/jvm/default-jvm/bin/java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done && \
     /usr/lib/jvm/default-jvm/bin/jlink --add-modules "$(cat modules-comma-separated.txt)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim && \
     rm -rf /usr/lib/jvm/java-15-amazon-corretto && \
     mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto
