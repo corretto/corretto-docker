@@ -12,7 +12,7 @@ ARG version=15.0.1.9-1
 #
 # Slim:
 #   JLink is used (retaining all modules) to create a slimmer version of the JDK excluding man-pages, header files and debugging symbols - saving ~113MB.
-RUN set -eux \
+RUN set -ux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         curl ca-certificates gnupg software-properties-common fontconfig java-common \
