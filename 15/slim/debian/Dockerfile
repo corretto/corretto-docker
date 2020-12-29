@@ -21,12 +21,12 @@ RUN set -ux \
     && mkdir -p /usr/share/man/man1 \
     && apt-get update \
     && apt-get install -y java-15-amazon-corretto-jdk=1:$version binutils \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-            curl gnupg software-properties-common \
     && for line in $(java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done \
     && jlink --add-modules "$(cat modules-comma-separated.txt)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && rm -rf /usr/lib/jvm/java-15-amazon-corretto \
-    && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto
+    && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+            curl gnupg software-properties-common binutils
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-15-amazon-corretto
