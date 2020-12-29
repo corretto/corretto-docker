@@ -15,7 +15,7 @@ ARG version=15.0.1.9-1
 RUN set -ux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg software-properties-common fontconfig java-common \
+        curl ca-certificates gnupg software-properties-common fontconfig \
     && curl -fL https://apt.corretto.aws/corretto.key | apt-key add - \
     && add-apt-repository 'deb https://apt.corretto.aws stable main' \
     && mkdir -p /usr/share/man/man1 || true \
