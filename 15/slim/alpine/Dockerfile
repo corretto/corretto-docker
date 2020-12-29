@@ -15,12 +15,11 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     SHA_SUM="6cfdf08be09f32ca298e2d5bd4a359ee2b275765c09b56d514624bf831eafb91" && \
     echo "${SHA_SUM}  /etc/apk/keys/amazoncorretto.rsa.pub" | sha256sum -c - && \
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
-    apk add --no-cache amazon-corretto-15=$version-r0 && \
-    apk add --no-cache binutils && \
-    for line in $(/usr/lib/jvm/default-jvm/bin/java --list-modules); do echo -n "${line}," | sed -e 's/@15.*,/,/' >> modules-comma-separated.txt; done && \
-    /usr/lib/jvm/default-jvm/bin/jlink --add-modules "$(cat modules-comma-separated.txt)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim && \
+    apk add --no-cache amazon-corretto-15=$version-r0 binutils && \
+    /usr/lib/jvm/default-jvm/bin/jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim && \
     rm -rf /usr/lib/jvm/java-15-amazon-corretto && \
-    mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto
+    mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto && \
+    apk del binutils
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
