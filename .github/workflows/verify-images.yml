@@ -8,13 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [8, 11, 15]
+        version-package: [8-jdk, 11-jdk, 15-jdk, 15-slim]
         platform: [alpine, al2, debian]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test Corretto-${{ matrix.version }} on ${{ matrix.platform }}
-        run: ./bin/test-image.sh ${{ matrix.version }}/jdk/${{ matrix.platform }}/Dockerfile
+        run: |
+          PLATFORM="${{ matrix.platform }}"
+          VERSION_PACKAGE="${{ matrix.version-package }}"
+          IFS='-' read VERSION PACKAGE <<<$VERSION_PACKAGE
+          DOCKER_FILE="${PLATFORM}/${PACKAGE}/${VERSION}/Dockerfile"
+          echo "Testing docker image ${DOCKER_FILE}..."
+          ./bin/test-image.sh "${DOCKER_FILE"
+
   verify-corretto-jre:
     name: Verify Corretto JRE Images
     runs-on: ubuntu-latest
