@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Test Corretto-${{ matrix.version }} on ${{ matrix.platform }}
+      - name: Test Corretto-${{ matrix.version-package }} on ${{ matrix.platform }}
         run: |
           PLATFORM="${{ matrix.platform }}"
           VERSION_PACKAGE="${{ matrix.version-package }}"
