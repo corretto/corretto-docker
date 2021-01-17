@@ -18,9 +18,9 @@ jobs:
           PLATFORM="${{ matrix.platform }}"
           VERSION_PACKAGE="${{ matrix.version-package }}"
           IFS='-' read VERSION PACKAGE <<<$VERSION_PACKAGE
-          DOCKER_FILE="${PLATFORM}/${PACKAGE}/${VERSION}/Dockerfile"
+          DOCKER_FILE="${VERSION}/${PACKAGE}/${PLATFORM}/Dockerfile"
           echo "Testing docker image ${DOCKER_FILE}..."
-          ./bin/test-image.sh "${DOCKER_FILE"
+          ./bin/test-image.sh "${DOCKER_FILE}"
 
   verify-corretto-jre:
     name: Verify Corretto JRE Images
