@@ -17,9 +17,12 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
     apk add --no-cache amazon-corretto-15=$version-r0 binutils && \
     /usr/lib/jvm/default-jvm/bin/jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim && \
-    rm -rf /usr/lib/jvm/java-15-amazon-corretto && \
+    apk del binutils amazon-corretto-15 && \
+    mkdir -p /usr/lib/jvm/ && \
     mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto && \
-    apk del binutils
+    ln -sfn /usr/lib/jvm/java-15-amazon-corretto /usr/lib/jvm/default-jvm 
+
+    
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm

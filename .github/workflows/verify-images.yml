@@ -9,21 +9,18 @@ jobs:
     strategy:
       matrix:
         version: [ 8, 11, 15 ]
-        package: [ jdk ]
+        package: [ jdk, slim ]
         platform: [ alpine, al2, debian ]
         include:
-          - version: 15
-            package: slim
-            platform: alpine
-          - version: 15
-            package: slim
-            platform: al2
-          - version: 15
-            package: slim
-            platform: debian
           - version: 8
             package: jre
             platform: alpine
+        exclude:
+          - version: 8
+            package: slim
+          # Remove this when slim images are added to Corretto-11
+          - version: 11
+            package: slim
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
