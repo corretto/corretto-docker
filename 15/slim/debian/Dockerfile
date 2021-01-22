@@ -22,10 +22,16 @@ RUN set -ux \
     && apt-get update \
     && apt-get install -y java-15-amazon-corretto-jdk=1:$version binutils \
     && jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
-    && rm -rf /usr/lib/jvm/java-15-amazon-corretto \
-    && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-            curl gnupg software-properties-common binutils
+            curl gnupg software-properties-common binutils java-15-amazon-corretto-jdk=1:$version \
+    && mkdir -p /usr/lib/jvm \
+    && mv /opt/corretto-slim /usr/lib/jvm/java-15-amazon-corretto \
+    && jdk_tools="java keytool rmid rmiregistry javac jaotc jlink jmod jhsdb jar jarsigner javadoc javap jcmd jconsole jdb jdeps jdeprscan jimage jinfo jmap jps jrunscript jshell jstack jstat jstatd serialver" \
+    && priority=$(echo "1${version}" | sed "s/\(\.\|-\)//g") \
+    && for i in ${jdk_tools}; do \
+          update-alternatives --install /usr/bin/$i $i /usr/lib/jvm/java-15-amazon-corretto/bin/$i ${priority}; \
+       done
+
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-15-amazon-corretto
