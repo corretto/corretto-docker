@@ -13,9 +13,9 @@ jobs:
         platform: [ alpine, al2, debian ]
         include:
           - version: 15
-              package: [ slim ]
+            package: [ slim ]
           - version: 8
-              package: [ jre ]
+            package: [ jre ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
