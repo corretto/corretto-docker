@@ -64,6 +64,14 @@ while [ "$1" != "" ]; do
             shift
             CORRETTO_15_GENERIC_LINUX=$1
             ;;
+        --corretto-16-musl-linux )
+            shift
+            CORRETTO_16_MUSL_LINUX=$1
+            ;;
+        --corretto-16-generic-linux )
+            shift
+            CORRETTO_16_GENERIC_LINUX=$1
+            ;;
         --help )
             usage
             exit
@@ -84,6 +92,10 @@ if [ ! -z "${CORRETTO_15_MUSL_LINUX}" ]; then
     update_musl_linux ${CORRETTO_15_MUSL_LINUX} 15
 fi
 
+if [ ! -z "${CORRETTO_16_MUSL_LINUX}" ]; then
+    update_musl_linux ${CORRETTO_16_MUSL_LINUX} 16
+fi
+
 if [ ! -z "${CORRETTO_8_MUSL_LINUX}" ]; then
     sed -i "" "s/^ARG version=.*/ARG version=${CORRETTO_8_MUSL_LINUX}/g" ./8/jdk/alpine/Dockerfile
     sed -i "" "s/^ARG version=.*/ARG version=${CORRETTO_8_MUSL_LINUX}/g" ./8/jre/alpine/Dockerfile
@@ -100,6 +112,10 @@ fi
 
 if [ ! -z "${CORRETTO_15_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_15_GENERIC_LINUX} 15
+fi
+
+if [ ! -z "${CORRETTO_16_GENERIC_LINUX}" ]; then
+    update_generic_linux ${CORRETTO_16_GENERIC_LINUX} 16
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
