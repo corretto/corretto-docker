@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        version: [ 8, 11, 15, 16 ]
+        version: [ 8, 11, 16 ]
         package: [ jdk, slim ]
         platform: [ alpine, al2, debian ]
         include:

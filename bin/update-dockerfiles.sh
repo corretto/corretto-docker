@@ -1,8 +1,9 @@
 #!/bin/bash
 
 usage() {
-    echo "usage: update-dockerfiles.sh [--help] [--corretto-8-generic-linux <version>] [--corretto-11-generic-linux <version>]"
-    echo "                             [--corretto-8-musl-linux <version>] [--corretto-11-musl-linux <version>]"
+    echo "usage: update-dockerfiles.sh [--help] [--corretto-8-generic-linux <version>] [--corretto-8-musl-linux <version>]"
+    echo "                             [--corretto-11-generic-linux <version>] [--corretto-11-musl-linux <version>]"
+    echo "                             [--corretto-16-generic-linux <version>] [--corretto-16-musl-linux <version>]"
     echo ""
     echo "Update the dockerfiles to use the version specified above."
 }
@@ -24,7 +25,7 @@ update_musl_linux() {
 update_generic_linux() {
     CORRETTO_VERSION=$1
     MAJOR_RELEASE=$2
-    
+
     jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
@@ -39,8 +40,8 @@ update_generic_linux() {
 }
 
 while [ "$1" != "" ]; do
-    case $1 in 
-        --corretto-8-generic-linux ) 
+    case $1 in
+        --corretto-8-generic-linux )
             shift
             CORRETTO_8_GENERIC_LINUX=$1
             ;;
@@ -55,14 +56,6 @@ while [ "$1" != "" ]; do
         --corretto-11-musl-linux )
             shift
             CORRETTO_11_MUSL_LINUX=$1
-            ;;
-        --corretto-15-musl-linux )
-            shift
-            CORRETTO_15_MUSL_LINUX=$1
-            ;;
-        --corretto-15-generic-linux )
-            shift
-            CORRETTO_15_GENERIC_LINUX=$1
             ;;
         --corretto-16-musl-linux )
             shift
@@ -88,10 +81,6 @@ if [ ! -z "${CORRETTO_11_MUSL_LINUX}" ]; then
     update_musl_linux ${CORRETTO_11_MUSL_LINUX} 11
 fi
 
-if [ ! -z "${CORRETTO_15_MUSL_LINUX}" ]; then
-    update_musl_linux ${CORRETTO_15_MUSL_LINUX} 15
-fi
-
 if [ ! -z "${CORRETTO_16_MUSL_LINUX}" ]; then
     update_musl_linux ${CORRETTO_16_MUSL_LINUX} 16
 fi
@@ -108,10 +97,6 @@ fi
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
-fi
-
-if [ ! -z "${CORRETTO_15_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_15_GENERIC_LINUX} 15
 fi
 
 if [ ! -z "${CORRETTO_16_GENERIC_LINUX}" ]; then
