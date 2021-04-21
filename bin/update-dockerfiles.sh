@@ -49,6 +49,9 @@ update_alpine_linux() {
     if [ -f ./${MAJOR_RELEASE}/jre/alpine/Dockerfile ]; then
         sed -i "" "s/FROM alpine:.*/FROM alpine:${ALPINE_VERSION}/g" ./${MAJOR_RELEASE}/jre/alpine/Dockerfile
     fi
+    if [ -f ./${MAJOR_RELEASE}/slim/alpine/Dockerfile ]; then
+        sed -i "" "s/FROM alpine:.*/FROM alpine:${ALPINE_VERSION}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
+    fi
 }
 
 while [ "$1" != "" ]; do
