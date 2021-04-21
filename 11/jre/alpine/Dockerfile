@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 
 ARG version=11.0.11.9.1
 
@@ -25,7 +25,7 @@ jdk.jdwp.agent,jdk.pack,jdk.scripting.nashorn.shell,jdk.jcmd,jdk.jfr" \
         --no-man-pages --no-header-files --strip-debug --output /temp/java-11-amazon-corretto
 
 
-FROM alpine:3.12
+FROM alpine:3.13
 COPY --from=0 /temp/java-11-amazon-corretto /usr/lib/jvm/java-11-amazon-corretto
 COPY --from=0 /licenses /licenses
 ENV LANG C.UTF-8

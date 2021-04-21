@@ -4,6 +4,8 @@ usage() {
     echo "usage: update-dockerfiles.sh [--help] [--corretto-8-generic-linux <version>] [--corretto-8-musl-linux <version>]"
     echo "                             [--corretto-11-generic-linux <version>] [--corretto-11-musl-linux <version>]"
     echo "                             [--corretto-16-generic-linux <version>] [--corretto-16-musl-linux <version>]"
+    echo "                             [--corretto-16-alpine-linux <version>] [--corretto-11-alpine-linux <version>]"
+    echo "                             [--corretto-8-alpine-linux <version>]"
     echo ""
     echo "Update the dockerfiles to use the version specified above."
 }
@@ -39,6 +41,16 @@ update_generic_linux() {
 
 }
 
+update_alpine_linux() {
+    ALPINE_VERSION=$1
+    MAJOR_RELEASE=$2
+
+    sed -i "" "s/FROM alpine:.*/FROM alpine:${ALPINE_VERSION}/g" ./${MAJOR_RELEASE}/jdk/alpine/Dockerfile
+    if [ -f ./${MAJOR_RELEASE}/jre/alpine/Dockerfile ]; then
+        sed -i "" "s/FROM alpine:.*/FROM alpine:${ALPINE_VERSION}/g" ./${MAJOR_RELEASE}/jre/alpine/Dockerfile
+    fi
+}
+
 while [ "$1" != "" ]; do
     case $1 in
         --corretto-8-generic-linux )
@@ -65,6 +77,18 @@ while [ "$1" != "" ]; do
             shift
             CORRETTO_16_GENERIC_LINUX=$1
             ;;
+        --corretto-8-alpine-linux )
+            shift
+            CORRETTO_8_ALPINE_LINUX=$1
+            ;;
+        --corretto-11-alpine-linux )
+            shift
+            CORRETTO_11_ALPINE_LINUX=$1
+            ;;
+        --corretto-16-alpine-linux )
+            shift
+            CORRETTO_16_ALPINE_LINUX=$1
+            ;;
         --help )
             usage
             exit
@@ -76,6 +100,18 @@ while [ "$1" != "" ]; do
     esac
     shift
 done
+
+if [ ! -z "${CORRETTO_8_ALPINE_LINUX}" ]; then
+    update_alpine_linux ${CORRETTO_8_ALPINE_LINUX} 8
+fi
+
+if [ ! -z "${CORRETTO_11_ALPINE_LINUX}" ]; then
+    update_alpine_linux ${CORRETTO_11_ALPINE_LINUX} 11
+fi
+
+if [ ! -z "${CORRETTO_16_ALPINE_LINUX}" ]; then
+    update_alpine_linux ${CORRETTO_16_ALPINE_LINUX} 16
+fi
 
 if [ ! -z "${CORRETTO_11_MUSL_LINUX}" ]; then
     update_musl_linux ${CORRETTO_11_MUSL_LINUX} 11
