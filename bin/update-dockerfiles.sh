@@ -20,6 +20,9 @@ update_musl_linux() {
     sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" .tags
 
     sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-alpine/${jdk_version}-alpine/g" README.md
+    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
+        sed -i "" "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
+    fi
 }
 
 update_generic_linux() {
@@ -36,6 +39,12 @@ update_generic_linux() {
 
     sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*,/${jdk_version},/g" README.md
     sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md
+    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
+        sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/al2/Dockerfile
+        sed -i "" "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/debian/Dockerfile
+        sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" .tags
+        sed -i "" "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" README.md
+    fi
 
 }
 
