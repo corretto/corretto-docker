@@ -14,7 +14,6 @@ ARG version=1.8.0_302.b08-1
 # Comment = https://github.com/docker-library/official-images/pull/7459#issuecomment-592242757
 # PR = https://github.com/docker-library/official-images/pull/7459
 RUN set -eux \
-    && if [[ `arch` == 'aarch64' ]]; then version=1.8.0_292.b10-2; fi \
     && export GNUPGHOME="$(mktemp -d)" \
     && curl -fL -o corretto.key https://yum.corretto.aws/corretto.key \
     && gpg --batch --import corretto.key \
