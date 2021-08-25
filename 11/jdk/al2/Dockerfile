@@ -1,5 +1,7 @@
 FROM amazonlinux:2
 
+RUN yum -y upgrade --security
+
 ARG version=11.0.12.7-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
