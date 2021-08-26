@@ -2,8 +2,6 @@ FROM alpine:3.12
 
 ARG version=11.0.12.7.1
 
-RUN apk -U upgrade
-
 # Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently. 
 # The Corretto team will update this file but you may see a few days' delay.
 RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads/resources/licenses/alpine/THIRD-PARTY-LICENSES-20200824.tar.gz && \
