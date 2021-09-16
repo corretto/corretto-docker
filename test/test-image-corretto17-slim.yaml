@@ -1,0 +1,17 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  env:
+    - key: LANG
+      value: C.UTF-8
+
+commandTests:
+  - name: "java command is registered using alternatives."
+    command: "java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-17.*"]
+
+  - name: "javac command is registered using alternatives."
+    command: "javac"
+    args: ["-version"]
+    expectedOutput: ["javac 17*"]
