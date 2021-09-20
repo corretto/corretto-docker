@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 8, 11, 16 ]
+        version: [ 8, 11, 16, 17 ]
         package: [ jdk, slim ]
         platform: [ alpine, al2, debian ]
         include:
