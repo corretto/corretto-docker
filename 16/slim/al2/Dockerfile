@@ -1,5 +1,5 @@
-FROM amazonlinux:2
-
+ARG BASE_IMAGE=public.ecr.aws/amazonlinux/amazonlinux:2
+FROM $BASE_IMAGE as amazoncorretto
 ARG version=16.0.2.7-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
@@ -16,6 +16,7 @@ ARG version=16.0.2.7-1
 #
 # Slim:
 #   JLink is used (retaining all modules) to create a slimmer version of the JDK excluding man-pages, header files and debugging symbols - saving ~113MB.
+ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem /etc/ssl/certs/
 RUN set -eux \
     && export GNUPGHOME="$(mktemp -d)" \
     && curl -fL -o corretto.key https://yum.corretto.aws/corretto.key \
@@ -60,7 +61,9 @@ RUN set -eux \
                  --slave /usr/bin/jstack jstack /usr/lib/jvm/java-16-amazon-corretto/bin/jstack \
                  --slave /usr/bin/jstat jstat /usr/lib/jvm/java-16-amazon-corretto/bin/jstat \
                  --slave /usr/bin/jstatd jstatd /usr/lib/jvm/java-16-amazon-corretto/bin/jstatd \
-    && yum clean all
+    && yum clean all ;\
+    keytool -importcert -file /etc/ssl/certs/rds-combined-ca-bundle.pem \
+       	    -keystore cacerts -storepass changeit -trustcacerts -noprompt || echo "FAILED to add RDS CA"
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-16-amazon-corretto

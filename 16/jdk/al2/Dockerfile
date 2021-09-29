@@ -1,6 +1,7 @@
-FROM amazonlinux:2
-
+ARG BASE_IMAGE=public.ecr.aws/amazonlinux/amazonlinux:2
+FROM $BASE_IMAGE as amazoncorretto
 ARG version=16.0.2.7-1
+
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management

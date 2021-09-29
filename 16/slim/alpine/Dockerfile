@@ -1,5 +1,5 @@
-FROM alpine:3.12
-
+ARG BASE_IMAGE=alpine:3.14
+FROM $BASE_IMAGE
 ARG version=16.0.2.7.1
 
 # Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently. 
@@ -7,6 +7,7 @@ ARG version=16.0.2.7.1
 #
 # Slim:
 #   JLink is used (retaining all modules) to create a slimmer version of the JDK excluding man-pages, header files and debugging symbols - saving ~113MB.
+ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem /usr/local/share/ca-certificates/
 RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads/resources/licenses/alpine/THIRD-PARTY-LICENSES-20200824.tar.gz && \
     echo "82f3e50e71b2aee21321b2b33de372feed5befad6ef2196ddec92311bc09becb  /THIRD-PARTY-LICENSES-20200824.tar.gz" | sha256sum -c - && \
     tar x -ovzf THIRD-PARTY-LICENSES-20200824.tar.gz && \
@@ -20,7 +21,9 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     apk del binutils amazon-corretto-16 && \
     mkdir -p /usr/lib/jvm/ && \
     mv /opt/corretto-slim /usr/lib/jvm/java-16-amazon-corretto && \
-    ln -sfn /usr/lib/jvm/java-16-amazon-corretto /usr/lib/jvm/default-jvm
+    ln -sfn /usr/lib/jvm/java-16-amazon-corretto /usr/lib/jvm/default-jvm  ;\
+    PATH=$PATH:/usr/lib/jvm/default-jvm/bin keytool -importcert -file /usr/local/share/ca-certificates/rds-combined-ca-bundle.pem \
+       	    -keystore cacerts -storepass changeit -trustcacerts -noprompt || echo "FAILED to add RDS CA"
 
     
 

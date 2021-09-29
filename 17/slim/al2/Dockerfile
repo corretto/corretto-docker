@@ -1,6 +1,7 @@
-FROM amazonlinux:2
+ARG BASE_IMAGE=public.ecr.aws/amazonlinux/amazonlinux:2
+FROM $BASE_IMAGE as amazoncorretto
+ARG VERSION=17.0.0.35-1
 
-ARG version=17.0.0.35-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management
@@ -16,6 +17,8 @@ ARG version=17.0.0.35-1
 #
 # Slim:
 #   JLink is used (retaining all modules) to create a slimmer version of the JDK excluding man-pages, header files and debugging symbols - saving ~113MB.
+
+ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem /etc/ssl/certs/
 RUN set -eux \
     && export GNUPGHOME="$(mktemp -d)" \
     && curl -fL -o corretto.key https://yum.corretto.aws/corretto.key \
@@ -25,19 +28,19 @@ RUN set -eux \
     && rm -r "$GNUPGHOME" corretto.key \
     && curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo \
     && grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo \
-    && yum install -y java-17-amazon-corretto-devel-$version \
+    && yum install -y java-17-amazon-corretto-devel-$VERSION \
     && (find /usr/lib/jvm/java-17-amazon-corretto -name src.zip -delete || true) \
     && yum install -y fontconfig \
     && yum install -y binutils \
     && jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
-    && yum remove -y binutils java-17-amazon-corretto-devel-$version \
+    && yum remove -y binutils java-17-amazon-corretto-devel-$VERSION \
     && mkdir -p /usr/lib/jvm/ \
     && mv /opt/corretto-slim /usr/lib/jvm/java-17-amazon-corretto \
-    && alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-amazon-corretto/bin/java $(echo "1${version}" | sed "s/\(\.\|-\)//g") \
+    && alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-amazon-corretto/bin/java $(echo "1${VERSION}" | sed "s/\(\.\|-\)//g") \
                   --slave /usr/bin/keytool keytool /usr/lib/jvm/java-17-amazon-corretto/bin/keytool \
                   --slave /usr/bin/rmid rmid /usr/lib/jvm/java-17-amazon-corretto/bin/rmid \
                   --slave /usr/bin/rmiregistry rmiregistry /usr/lib/jvm/java-17-amazon-corretto/bin/rmiregistry \
-    && alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-amazon-corretto/bin/javac $(echo "1${version}" | sed "s/\(\.\|-\)//g") \
+    && alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-17-amazon-corretto/bin/javac $(echo "1${VERSION}" | sed "s/\(\.\|-\)//g") \
                  --slave /usr/bin/jaotc jaotc /usr/lib/jvm/java-17-amazon-corretto/bin/jaotc \
                  --slave /usr/bin/jlink jlink /usr/lib/jvm/java-17-amazon-corretto/bin/jlink \
                  --slave /usr/bin/jmod jmod /usr/lib/jvm/java-17-amazon-corretto/bin/jmod \
@@ -60,7 +63,9 @@ RUN set -eux \
                  --slave /usr/bin/jstack jstack /usr/lib/jvm/java-17-amazon-corretto/bin/jstack \
                  --slave /usr/bin/jstat jstat /usr/lib/jvm/java-17-amazon-corretto/bin/jstat \
                  --slave /usr/bin/jstatd jstatd /usr/lib/jvm/java-17-amazon-corretto/bin/jstatd \
-    && yum clean all
+    && yum clean all ;\
+    keytool  -importcert -file /etc/ssl/certs/rds-combined-ca-bundle.pem \
+       	        -keystore cacerts -storepass changeit -trustcacerts -noprompt || echo "FAILED to add RDS CA"
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto

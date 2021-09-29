@@ -1,4 +1,5 @@
-FROM debian:buster-slim
+ARG BASE_IMAGE=debian:buster-slim
+FROM $BASE_IMAGE
 
 ARG version=11.0.12.7-1
 # In addition to installing the Amazon corretto, we also install
@@ -10,6 +11,7 @@ ARG version=11.0.12.7-1
 # See:
 #  https://github.com/docker-library/official-images/blob/master/test/tests/java-uimanager-font/container.java
 
+ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem /etc/ssl/certs/
 RUN set -eux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -20,7 +22,9 @@ RUN set -eux \
     && apt-get update \
     && apt-get install -y java-11-amazon-corretto-jdk=1:$version \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        curl gnupg software-properties-common
+        curl gnupg software-properties-common ;\
+    keytool -importcert -file /etc/ssl/certs/rds-combined-ca-bundle.pem \
+       	    -keystore cacerts -storepass changeit -trustcacerts -noprompt || echo "FAILED to add RDS CA"
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto

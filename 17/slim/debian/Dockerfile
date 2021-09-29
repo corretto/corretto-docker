@@ -1,4 +1,5 @@
-FROM debian:buster-slim
+ARG BASE_IMAGE=debian:buster-slim
+FROM $BASE_IMAGE
 
 ARG version=17.0.0.35-1
 # In addition to installing the Amazon corretto, we also install
@@ -12,6 +13,7 @@ ARG version=17.0.0.35-1
 #
 # Slim:
 #   JLink is used (retaining all modules) to create a slimmer version of the JDK excluding man-pages, header files and debugging symbols - saving ~113MB.
+ADD https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem /etc/ssl/certs/
 RUN set -ux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -30,7 +32,9 @@ RUN set -ux \
     && priority=$(echo "1${version}" | sed "s/\(\.\|-\)//g") \
     && for i in ${jdk_tools}; do \
           update-alternatives --install /usr/bin/$i $i /usr/lib/jvm/java-17-amazon-corretto/bin/$i ${priority}; \
-       done
+       done; \
+    keytool -importcert -file /etc/ssl/certs/rds-combined-ca-bundle.pem \
+       	    -keystore cacerts -storepass changeit -trustcacerts -noprompt
 
 
 ENV LANG C.UTF-8

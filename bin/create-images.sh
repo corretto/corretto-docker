@@ -25,9 +25,14 @@ function create_tag() {
     DIRECTORY=$1
     ARCHITECTURE=$2
     TAGS=$3
+    BASE_IMAGE=$4
     if [[ "$ARCHITECTURE" =~ .*"$SUPPORTED_ARCHITECTURE".* ]]; then
         for TAG in ${TAGS//,/ }; do
-            docker build $DIRECTORY -t $REPOSITORY:$TAG
+          if [ -z "${BASE_IMAGE}" ]; then
+              docker build $DIRECTORY -t $REPOSITORY:$TAG
+          else
+              docker build $DIRECTORY --build-arg BASE_IMAGE=${BASE_IMAGE} -t $REPOSITORY:$TAG
+          fi
             CREATED_TAGS+=("$REPOSITORY:$TAG")
         done
 
@@ -46,8 +51,12 @@ while read -r line; do
         "Directory"*)
             DIRECTORY=$(echo $line | cut -d':' -f2)
             ;;
+        "BaseImage"*)
+            BASE_IMAGE=$(echo $line | sed 's/BaseImage\: //g')
+            echo Found BaseImage is $BASE_IMAGE
+            ;;
         ""*)
-        create_tag "$DIRECTORY" "$ARCHITECTURE" "$(echo $TAGS | sed -e 's/ //g')"
+        create_tag "$DIRECTORY" "$ARCHITECTURE" "$(echo $TAGS | sed -e 's/ //g')" "${BASE_IMAGE:-""}"
     esac
 done < .tags
 

@@ -9,6 +9,7 @@ Directory: 11/jdk/al2
 Tags: 8-alpine, 8u302-alpine, 8-alpine-full, 8-alpine-jdk
 Architectures: amd64
 Directory: 8/jdk/alpine
+#BaseImage: alpine:3.14
 
 Tags: 8-alpine-jre, 8u302-alpine-jre
 Architectures: amd64
@@ -37,3 +38,27 @@ Directory: 16/jdk/alpine
 Tags: 16-alpine-slim, 16.0.2-alpine-slim
 Architectures: amd64
 Directory: 16/slim/alpine
+
+Tags: 17-alpine-jdk, 17-alpine-full
+Architectures: amd64, arm64v8
+Directory: 17/jdk/alpine
+
+Tags: 17, 17.0.0, 17.0.0-al2, 17-al2-jdk, 17-al2-full
+Architectures: amd64, arm64v8
+Directory: 17/jdk/al2
+
+Tags: 17-debian-jdk, 17-debian-full
+Architectures: amd64, arm64v8
+Directory: 17/jdk/debian
+
+Tags: 17-alpine-slim
+Architectures: amd64, arm64v8
+Directory: 17/slim/alpine
+
+Tags: 17-al2-slim
+Architectures: amd64, arm64v8
+Directory: 17/slim/al2
+
+Tags: 17-debian-slim
+Architectures: amd64, arm64v8
+Directory: 17/slim/debian
