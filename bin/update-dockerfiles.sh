@@ -1,11 +1,9 @@
 #!/bin/bash
 
 usage() {
-    echo "usage: update-dockerfiles.sh [--help] [--corretto-8-generic-linux <version>] [--corretto-8-musl-linux <version>]"
-    echo "                             [--corretto-11-generic-linux <version>] [--corretto-11-musl-linux <version>]"
-    echo "                             [--corretto-16-generic-linux <version>] [--corretto-16-musl-linux <version>]"
+    echo "usage: update-dockerfiles.sh [--help]"
     echo ""
-    echo "Update the dockerfiles to use the version specified above."
+    echo "Update the dockerfiles to use the version from versions.json"
 }
 
 update_musl_linux() {
@@ -50,30 +48,6 @@ update_generic_linux() {
 
 while [ "$1" != "" ]; do
     case $1 in
-        --corretto-8-generic-linux )
-            shift
-            CORRETTO_8_GENERIC_LINUX=$1
-            ;;
-        --corretto-11-generic-linux )
-            shift
-            CORRETTO_11_GENERIC_LINUX=$1
-            ;;
-        --corretto-8-musl-linux )
-            shift
-            CORRETTO_8_MUSL_LINUX=$1
-            ;;
-        --corretto-11-musl-linux )
-            shift
-            CORRETTO_11_MUSL_LINUX=$1
-            ;;
-        --corretto-16-musl-linux )
-            shift
-            CORRETTO_16_MUSL_LINUX=$1
-            ;;
-        --corretto-16-generic-linux )
-            shift
-            CORRETTO_16_GENERIC_LINUX=$1
-            ;;
         --help )
             usage
             exit
@@ -86,22 +60,10 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ ! -z "${CORRETTO_11_MUSL_LINUX}" ]; then
-    update_musl_linux ${CORRETTO_11_MUSL_LINUX} 11
-fi
-
-if [ ! -z "${CORRETTO_16_MUSL_LINUX}" ]; then
-    update_musl_linux ${CORRETTO_16_MUSL_LINUX} 16
-fi
-
-if [ ! -z "${CORRETTO_8_MUSL_LINUX}" ]; then
-    sed -i "" "s/^ARG version=.*/ARG version=${CORRETTO_8_MUSL_LINUX}/g" ./8/jdk/alpine/Dockerfile
-    sed -i "" "s/^ARG version=.*/ARG version=${CORRETTO_8_MUSL_LINUX}/g" ./8/jre/alpine/Dockerfile
-    jdk_version=$(echo ${CORRETTO_8_MUSL_LINUX} | cut -d'.' -f2)
-    sed -i "" "s/8u[0-9]*-alpine/8u${jdk_version}-alpine/g" .tags
-
-    sed -i "" "s/8u[0-9]*-alpine/8u${jdk_version}-alpine/g" README.md
-fi
+CORRETTO_8_GENERIC_LINUX=$(cat versions.json | jq -r '.["8"]' )
+CORRETTO_11_GENERIC_LINUX=$(cat versions.json | jq -r '.["11"]' )
+CORRETTO_16_GENERIC_LINUX=$(cat versions.json | jq -r '.["16"]' )
+CORRETTO_17_GENERIC_LINUX=$(cat versions.json | jq -r '.["17"]' )
 
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
@@ -124,3 +86,5 @@ if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     sed -i "" "s/8u[0-9]*,/8u${jdk_version},/g" README.md
     sed -i "" "s/8u[0-9]*-al2/8u${jdk_version}-al2/g" README.md
 fi
+
+python3 bin/apply-template.py
