@@ -5,7 +5,7 @@ import os
 
 def process_template_files(major_version, version, platform):
     templateLoader = jinja2.FileSystemLoader(searchpath="./templates/")
-    templateEnv = jinja2.Environment(loader=templateLoader)
+    templateEnv = jinja2.Environment(autoescape=jinja2.select_autoescape(['html', 'xml']), loader=templateLoader)
 
     template = templateEnv.get_template(f"{platform}.Dockerfile.template")
     input_parameter = {}
