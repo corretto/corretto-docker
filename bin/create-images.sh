@@ -60,4 +60,4 @@ while read -r line; do
     esac
 done < .tags
 
-(IFS=$'\n'; echo "${CREATED_TAGS[*]}")
+(IFS=$'\n'; echo "${CREATED_TAGS[*]}" | tee images.build)
