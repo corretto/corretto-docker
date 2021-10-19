@@ -29,11 +29,17 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 
 
 # Supported Tags
-* [8, 8u302, 8u302-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
-* [11, 11.0.12, 11.0.12-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine, 8u302-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine-jre, 8u302-alpine-jre](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine, 11.0.12-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8, 8u312, 8u312-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
+* [11, 11.0.13, 11.0.13-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.12, 8u312-alpine3.12, 8-alpine3.12-full, 8-alpine3.12-jdk, 8-alpine, 8u312-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.12-jre, 8u312-alpine3.12-jre, 8-alpine-jre, 8u312-alpine-jre](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.13, 8u312-alpine3.13, 8-alpine3.13-full, 8-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.13-jre, 8u312-alpine3.13-jre](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.14, 8u312-alpine3.14, 8-alpine3.14-full, 8-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.14-jre, 8u312-alpine3.14-jre](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.12, 11.0.13-alpine3.12, 11-alpine3.12-full, 11-alpine3.12-jdk, 11-alpine, 11.0.13-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.13, 11.0.13-alpine3.13, 11-alpine3.13-full, 11-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.14, 11.0.13-alpine3.14, 11-alpine3.14-full, 11-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
 * [16, 16-al2-jdk, 16-al2-full](https://hub.docker.com/_/amazoncorretto)
 * [16-alpine, 16-alpine-full, 16-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
