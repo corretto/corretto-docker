@@ -1,0 +1,78 @@
+name: Verify repository and generate tags
+
+on: [pull_request_target]
+
+jobs: 
+  verify-repository-content:
+    name: Verify repository content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Generate repository content from version
+        run: |
+          bash bin/update-dockerfiles.sh
+          git diff -R | tee ${GITHUB_WORKSPACE}/pr.diff
+      - name: Generate tags for pr
+        run: |
+          python3 bin/tag-generator.py | tee ${GITHUB_WORKSPACE}/.tags
+      - name: Add Comment to PR
+        uses: actions/github-script@v5
+        with: 
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            //Determine if new comment is required and generate comment text
+            commentText = 'Diff for ' + context.payload.pull_request.head.sha + ':\n\n'
+            needNewComment = true;
+            console.log('Reviewing existing comments...');
+            for await (const { data: comments } of github.paginate.iterator(
+              github.rest.issues.listComments,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+              }
+            )) {
+              for (const comment of comments) {
+                if (comment.user.login === 'github-actions[bot]') {
+                  if (needNewComment && comment.body.includes(commentText)) {
+                    needNewComment = false;
+                  } else {
+                    console.log('Deleting comment: ' + comment.id);
+                    await github.rest.issues.deleteComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      comment_id: comment.id,
+                    });
+                  }
+                }
+              }
+            }
+            if (needNewComment) {
+              const fs = require('fs');
+              diff = fs.readFileSync(process.env.GITHUB_WORKSPACE + '/pr.diff').toString().trimEnd();
+
+              if (diff) {
+                commentText = commentText + "\n```\n" + diff + "\n```\n"
+
+              } else {
+                commentText = commentText + "The repository contains the expected content"
+              }
+
+              tags = fs.readFileSync(process.env.GITHUB_WORKSPACE + '/.tags').toString().trimEnd();
+              commentText = commentText + "<details>\n<summary>updated tags for [library/amazoncorretto](https://github.com/docker-library/official-images/blob/master/library/amazoncorretto)</summary>\n"
+              commentText = commentText + "\n```\n" + tags + "\n```\n</details>"
+              console.log('Creating new comment...');
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: commentText,
+              });
+            }
+
+
+
