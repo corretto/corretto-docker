@@ -40,8 +40,6 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 * [11-alpine3.12, 11.0.13-alpine3.12, 11-alpine3.12-full, 11-alpine3.12-jdk, 11-alpine, 11.0.13-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [11-alpine3.13, 11.0.13-alpine3.13, 11-alpine3.13-full, 11-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
 * [11-alpine3.14, 11.0.13-alpine3.14, 11-alpine3.14-full, 11-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
-* [16, 16-al2-jdk, 16-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [16-alpine, 16-alpine-full, 16-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
 * [17-alpine3.12, 17.0.1-alpine3.12, 17-alpine3.12-full, 17-alpine3.12-jdk](https://hub.docker.com/_/amazoncorretto)
 * [17-alpine3.13, 17.0.1-alpine3.13, 17-alpine3.13-full, 17-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
