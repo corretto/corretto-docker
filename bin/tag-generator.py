@@ -1,6 +1,6 @@
 import json
 
-DEFAULT_ALPINE_VERSION = '3.12'
+DEFAULT_ALPINE_VERSION = '3.14'
 ALPINE_VERSIONS = ['3.12','3.13','3.14']
 
 def generate_tags(key, version):
