@@ -1,6 +1,9 @@
 name: Verify repository and generate tags
 
-on: [pull_request_target]
+on: 
+  push:
+    branches: 
+      - main
 
 jobs: 
   verify-repository-content:
@@ -10,7 +13,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.push.after }}
           fetch-depth: 0
       - name: Generate repository content from version
         run: |
@@ -25,15 +28,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             //Determine if new comment is required and generate comment text
-            commentText = 'Diff for ' + context.payload.pull_request.head.sha + ':\n\n'
+            commentText = 'Contents for library/amazoncorretto:\n\n'
             needNewComment = true;
             console.log('Reviewing existing comments...');
+            console.log(context.sha);
             for await (const { data: comments } of github.paginate.iterator(
-              github.rest.issues.listComments,
+              github.rest.repos.listCommentsForCommit,
               {
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                commit_sha: context.sha,
               }
             )) {
               for (const comment of comments) {
@@ -42,7 +46,7 @@ jobs:
                     needNewComment = false;
                   } else {
                     console.log('Deleting comment: ' + comment.id);
-                    await github.rest.issues.deleteComment({
+                    await github.rest.repos.deleteCommitComment({
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       comment_id: comment.id,
@@ -53,23 +57,14 @@ jobs:
             }
             if (needNewComment) {
               const fs = require('fs');
-              diff = fs.readFileSync(process.env.GITHUB_WORKSPACE + '/pr.diff').toString().trimEnd();
-
-              if (diff) {
-                commentText = commentText + "\n```\n" + diff + "\n```\n"
-
-              } else {
-                commentText = commentText + "The repository contains the expected content"
-              }
-
               tags = fs.readFileSync(process.env.GITHUB_WORKSPACE + '/.tags').toString().trimEnd();
               commentText = commentText + "<details>\n<summary>updated tags for [library/amazoncorretto](https://github.com/docker-library/official-images/blob/master/library/amazoncorretto)</summary>\n"
-              commentText = commentText + "\n```\n" + tags + "\n```\n</details>"
+              commentText = commentText + "\n```\nGitCommit : " + context.sha + "\n\n" + tags + "\n```\n</details>"
               console.log('Creating new comment...');
-              await github.rest.issues.createComment({
+              await github.rest.repos.createCommitComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
+                commit_sha: context.sha,
                 body: commentText,
               });
             }
