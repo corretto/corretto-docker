@@ -29,21 +29,21 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 
 
 # Supported Tags
-* [8, 8u312, 8u312-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
-* [11, 11.0.13, 11.0.13-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.12, 8u312-alpine3.12, 8-alpine3.12-full, 8-alpine3.12-jdk, 8-alpine, 8u312-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.12-jre, 8u312-alpine3.12-jre, 8-alpine-jre, 8u312-alpine-jre](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.13, 8u312-alpine3.13, 8-alpine3.13-full, 8-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.13-jre, 8u312-alpine3.13-jre](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.14, 8u312-alpine3.14, 8-alpine3.14-full, 8-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.14-jre, 8u312-alpine3.14-jre](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine3.12, 11.0.13-alpine3.12, 11-alpine3.12-full, 11-alpine3.12-jdk, 11-alpine, 11.0.13-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine3.13, 11.0.13-alpine3.13, 11-alpine3.13-full, 11-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine3.14, 11.0.13-alpine3.14, 11-alpine3.14-full, 11-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8, 8u322, 8u322-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
+* [11, 11.0.14, 11.0.14-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.12, 8u322-alpine3.12, 8-alpine3.12-full, 8-alpine3.12-jdk, 8-alpine, 8u322-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.12-jre, 8u322-alpine3.12-jre, 8-alpine-jre, 8u322-alpine-jre](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.13, 8u322-alpine3.13, 8-alpine3.13-full, 8-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.13-jre, 8u322-alpine3.13-jre](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.14, 8u322-alpine3.14, 8-alpine3.14-full, 8-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
+* [8-alpine3.14-jre, 8u322-alpine3.14-jre](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.12, 11.0.14-alpine3.12, 11-alpine3.12-full, 11-alpine3.12-jdk, 11-alpine, 11.0.14-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.13, 11.0.14-alpine3.13, 11-alpine3.13-full, 11-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
+* [11-alpine3.14, 11.0.14-alpine3.14, 11-alpine3.14-full, 11-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
 * [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [17-alpine3.12, 17.0.1-alpine3.12, 17-alpine3.12-full, 17-alpine3.12-jdk](https://hub.docker.com/_/amazoncorretto)
-* [17-alpine3.13, 17.0.1-alpine3.13, 17-alpine3.13-full, 17-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [17-alpine3.14, 17.0.1-alpine3.14, 17-alpine3.14-full, 17-alpine3.14-jdk, 17-alpine, 17.0.1-alpine, 17-alpine-full, 17-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+* [17-alpine3.12, 17.0.2-alpine3.12, 17-alpine3.12-full, 17-alpine3.12-jdk](https://hub.docker.com/_/amazoncorretto)
+* [17-alpine3.13, 17.0.2-alpine3.13, 17-alpine3.13-full, 17-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
+* [17-alpine3.14, 17.0.2-alpine3.14, 17-alpine3.14-full, 17-alpine3.14-jdk, 17-alpine, 17.0.2-alpine, 17-alpine-full, 17-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 
 # Building
 To build the docker images, you can use the following command.
@@ -62,7 +62,7 @@ AWS security directly.
 :warning: If you are using a Corretto Docker image with an AL2 guest, then Amazon’s ECS scanning function can result in a [ALAS2-2021-1731 notification](https://alas.aws.amazon.com/AL2/ALAS-2021-1731.html). However, there is no reason to update the Corretto application within Docker. You can safely ignore this ALAS. Once the next Corretto quarterly release is posted, currently scheduled for January 19, 2022, the alarm condition will be satisfied.
 This notice only affects the following Corretto Docker images with AL2 in the Docker ECR:
   
-* [11, 11.0.13, 11.0.13-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
+* [11, 11.0.14, 11.0.14-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
 * [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
 
 ---
