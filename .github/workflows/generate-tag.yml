@@ -59,7 +59,7 @@ jobs:
               const fs = require('fs');
               tags = fs.readFileSync(process.env.GITHUB_WORKSPACE + '/.tags').toString().trimEnd();
               commentText = commentText + "<details>\n<summary>updated tags for [library/amazoncorretto](https://github.com/docker-library/official-images/blob/master/library/amazoncorretto)</summary>\n"
-              commentText = commentText + "\n```\nGitCommit : " + context.sha + "\n\n" + tags + "\n```\n</details>"
+              commentText = commentText + "\n```\nGitCommit: " + context.sha + "\n\n" + tags + "\n```\n</details>"
               console.log('Creating new comment...');
               await github.rest.repos.createCommitComment({
                 owner: context.repo.owner,
