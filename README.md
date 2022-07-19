@@ -29,8 +29,8 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 
 
 # Supported Tags
-* [8, 8u332, 8u332-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
-* [11, 11.0.15, 11.0.15-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
+* [8, 8u342, 8u342-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
+* [11, 11.0.16, 11.0.16-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
 * [8-alpine, 8u322-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
 * [8-alpine-jre, 8u322-alpine-jre](https://hub.docker.com/_/amazoncorretto)
 * [8-alpine3.13, 8u322-alpine3.13, 8-alpine3.13-full, 8-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
@@ -61,7 +61,7 @@ AWS security directly.
 :warning: If you are using a Corretto Docker image with an AL2 guest, then Amazon’s ECS scanning function can result in a [ALAS2-2021-1731 notification](https://alas.aws.amazon.com/AL2/ALAS-2021-1731.html). However, there is no reason to update the Corretto application within Docker. You can safely ignore this ALAS. Once the next Corretto quarterly release is posted, currently scheduled for January 19, 2022, the alarm condition will be satisfied.
 This notice only affects the following Corretto Docker images with AL2 in the Docker ECR:
   
-* [11, 11.0.15, 11.0.15-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
+* [11, 11.0.16, 11.0.16-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
 * [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
 
 ---
