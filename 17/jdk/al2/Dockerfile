@@ -1,32 +1,28 @@
 FROM amazonlinux:2
 
 ARG version=17.0.7.7-1
-# In addition to installing the Amazon corretto, we also install
-# fontconfig. The folks who manage the docker hub's
-# official image library have found that font management
-# is a common usecase, and painpoint, and have
-# recommended that Java images include font support.
-#
-# See:
-#  https://github.com/docker-library/official-images/blob/master/test/tests/java-uimanager-font/container.java
 
-# The logic and code related to Fingerprint is contributed by @tianon in a Github PR's Conversation
-# Comment = https://github.com/docker-library/official-images/pull/7459#issuecomment-592242757
-# PR = https://github.com/docker-library/official-images/pull/7459
 RUN set -eux \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && curl -fL -o corretto.key https://yum.corretto.aws/corretto.key \
-    && gpg --batch --import corretto.key \
-    && gpg --batch --export --armor '6DC3636DAE534049C8B94623A122542AB04F24E3' > corretto.key \
-    && rpm --import corretto.key \
-    && rm -r "$GNUPGHOME" corretto.key \
-    && curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo \
-    && grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo \
-    && echo "priority=9" >> /etc/yum.repos.d/corretto.repo \
-    && yum install -y java-17-amazon-corretto-devel-$version \
-    && (find /usr/lib/jvm/java-17-amazon-corretto -name src.zip -delete || true) \
-    && yum install -y fontconfig \
-    && yum clean all
+    && export resouce_version=$(echo $version | tr '-' '.') \
+    && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2 \
+    && echo "localpkg_gpgcheck=1" >> /etc/yum.conf \
+    && CORRETO_TEMP=$(mktemp -d) \
+    && pushd ${CORRETO_TEMP} \
+    && RPM_LIST=("java-17-amazon-corretto-headless-$version.amzn2.1.$(uname -m).rpm" "java-17-amazon-corretto-$version.amzn2.1.$(uname -m).rpm" "java-17-amazon-corretto-devel-$version.amzn2.1.$(uname -m).rpm" "java-17-amazon-corretto-jmods-$version.amzn2.1.$(uname -m).rpm") \
+    && for rpm in ${RPM_LIST[@]}; do \
+    curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
+    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: rsa sha1 (md5) pgp md5 OK" || exit 1 \
+    && if [[ ${rpm} != *jmods* ]]; then \
+      yum install -y $(yum deplist "${CORRETO_TEMP}/${rpm}" |grep provider | grep -vE "log4j-cve|corretto" | tr -s ' ' |cut -d ' ' -f 3 ); \
+      fi; \
+      done \
+    && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
+    && popd \
+    && (find /usr/lib/jvm/java-17-amazon-corretto.$(uname -m) -name src.zip -delete || true) \
+    && rm -rf ${CORRETO_TEMP} \
+    && yum clean all \
+    && rm -rf /var/cache/yum \
+    && sed -i '/localpkg_gpgcheck=1/d' /etc/yum.conf
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto

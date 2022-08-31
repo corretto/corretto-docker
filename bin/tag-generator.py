@@ -9,7 +9,7 @@ def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
 
-    al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full",f"{key}-al2-jdk"]
+    al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic" f"{expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
     al2023_tags = [f"{key}-al2023",  f"{expanded_version}-al2023" ,f"{key}-al2023-jdk"]
     if key == '8':
         al2_tags.append('latest')
@@ -17,7 +17,7 @@ def generate_tags(key, version):
 
     print("Tags: " + ", ".join(al2_tags) + "")
     print("Architectures: amd64, arm64v8")
-    print(f"Directory: {key}/jdk/al2\n")
+    print(f"Directory: {key}/jdk/al2-generic\n")
 
     if key in LTS_VERSIONS:
         print("Tags: " + ", ".join(al2023_tags) + "")
@@ -35,6 +35,26 @@ def generate_tags(key, version):
             print("Tags: " + ", ".join([f"{key}-al2023-headful",  f"{expanded_version}-al2023-headful"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/headful/al2023\n")
+
+    # For LTS versions with modular AmazonLinux packages we want to tag those images
+    native_package_modifier="al2-native-RC-"
+    if key in ["17"]:
+        for image_type in ['headless', 'headful', 'jdk']:
+            print(f"Tags: {key}-{native_package_modifier}{image_type}, {expanded_version}-{native_package_modifier}{image_type}")
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/{image_type}/al2\n")
+
+    if key in ["11"]:
+        for image_type in ['headless', 'jdk']:
+            print(f"Tags: {key}-{native_package_modifier}{image_type}, {expanded_version}-{native_package_modifier}{image_type}")
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/{image_type}/al2\n")
+
+    if key in ["8"]:
+        for image_type in ['jre', 'jdk']:
+            print(f"Tags: {key}-{native_package_modifier}{image_type}, {expanded_version}-{native_package_modifier}{image_type}")
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/{image_type}/al2\n")
 
     for alpine_version in ALPINE_VERSIONS:
         alpine_tags = [f"{key}-alpine{alpine_version}", f"{expanded_version}-alpine{alpine_version}", f"{key}-alpine{alpine_version}-full", f"{key}-alpine{alpine_version}-jdk"]

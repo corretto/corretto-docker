@@ -1,5 +1,7 @@
 #!/bin/bash
+set -xe
 SED="sed -i"
+
 sed --version 2>/dev/null || SED="sed -i.bkp"
 
 LTS_VERSIONS=("8" "11" "17")
@@ -33,7 +35,7 @@ update_generic_linux() {
     jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2/Dockerfile
+    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
 
     if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile
@@ -42,6 +44,16 @@ update_generic_linux() {
     fi
 
     ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/debian/Dockerfile
+
+    ADDITIONAL_IMAGES="jdk jre headful headless"
+    for IMAGE_TYPE in ${ADDITIONAL_IMAGES}; do
+        echo "Checking $IMAGE_TYPE"
+        if [ -d ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2 ]; then
+            echo "Updating"
+
+            ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/${IMAGE_TYPE}/Dockerfile
+        fi
+    done
 
     ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*,/${jdk_version},/g" README.md
     ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md

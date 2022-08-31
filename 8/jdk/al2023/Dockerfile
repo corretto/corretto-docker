@@ -19,6 +19,7 @@ RUN set -eux \
     && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m)/lib/src.zip \
     && rm -rf ${CORRETO_TEMP} \
     && dnf clean all \
+    && rm -rf /var/cache/yum \
     && sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf
 
 ENV LANG C.UTF-8

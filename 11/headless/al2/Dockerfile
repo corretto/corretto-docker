@@ -8,7 +8,7 @@ RUN set -eux \
     && echo "localpkg_gpgcheck=1" >> /etc/yum.conf \
     && CORRETO_TEMP=$(mktemp -d) \
     && pushd ${CORRETO_TEMP} \
-    && RPM_LIST=("java-11-amazon-corretto-headless-$version.amzn2.$(uname -m).rpm" "java-11-amazon-corretto-$version.amzn2.$(uname -m).rpm") \
+    && RPM_LIST=("java-11-amazon-corretto-headless-$version.amzn2.$(uname -m).rpm") \
     && for rpm in ${RPM_LIST[@]}; do \
     curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: rsa sha1 (md5) pgp md5 OK" || exit 1 \
