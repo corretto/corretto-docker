@@ -29,20 +29,9 @@ aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-n
 
 
 # Supported Tags
-* [8, 8u342, 8u342-al2, 8-al2-full,8-al2-jdk, latest](https://hub.docker.com/_/amazoncorretto)
-* [11, 11.0.16, 11.0.16-al2, 11-al2-jdk, 11-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine, 8u322-alpine, 8-alpine-full, 8-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine-jre, 8u322-alpine-jre](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.13, 8u322-alpine3.13, 8-alpine3.13-full, 8-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.13-jre, 8u322-alpine3.13-jre](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.14, 8u322-alpine3.14, 8-alpine3.14-full, 8-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
-* [8-alpine3.14-jre, 8u322-alpine3.14-jre](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine, 11.0.14-alpine, 11-alpine-full, 11-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine3.13, 11.0.14-alpine3.13, 11-alpine3.13-full, 11-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [11-alpine3.14, 11.0.14-alpine3.14, 11-alpine3.14-full, 11-alpine3.14-jdk](https://hub.docker.com/_/amazoncorretto)
-* [17, 17-al2-jdk, 17-al2-full](https://hub.docker.com/_/amazoncorretto)
-* [17-alpine3.13, 17.0.2-alpine3.13, 17-alpine3.13-full, 17-alpine3.13-jdk](https://hub.docker.com/_/amazoncorretto)
-* [17-alpine3.14, 17.0.2-alpine3.14, 17-alpine3.14-full, 17-alpine3.14-jdk, 17-alpine, 17.0.2-alpine, 17-alpine-full, 17-alpine-jdk](https://hub.docker.com/_/amazoncorretto)
+
+See https://hub.docker.com/_/amazoncorretto
+
 
 # Building
 To build the docker images, you can use the following command.
