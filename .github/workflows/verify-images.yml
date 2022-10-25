@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 8, 11, 17, 18, 19 ]
+        version: [ 8, 11, 17, 19 ]
         package: [ jdk ]
         platform: [ al2, debian ]
     steps:
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 8, 11, 17, 18, 19 ]
+        version: [ 8, 11, 17, 19 ]
         os_version: ["3.13", "3.14", "3.15", "3.16" ]
     steps:
       - name: Checkout code

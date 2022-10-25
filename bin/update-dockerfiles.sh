@@ -61,7 +61,6 @@ done
 CORRETTO_8_GENERIC_LINUX=$(cat versions.json | jq -r '.["8"]' )
 CORRETTO_11_GENERIC_LINUX=$(cat versions.json | jq -r '.["11"]' )
 CORRETTO_17_GENERIC_LINUX=$(cat versions.json | jq -r '.["17"]' )
-CORRETTO_18_GENERIC_LINUX=$(cat versions.json | jq -r '.["18"]' )
 CORRETTO_19_GENERIC_LINUX=$(cat versions.json | jq -r '.["19"]' )
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
@@ -70,10 +69,6 @@ fi
 
 if [ ! -z "${CORRETTO_17_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_17_GENERIC_LINUX} 17
-fi
-
-if [ ! -z "${CORRETTO_18_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_18_GENERIC_LINUX} 18
 fi
 
 if [ ! -z "${CORRETTO_19_GENERIC_LINUX}" ]; then
