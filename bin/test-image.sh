@@ -28,6 +28,9 @@ docker build -f "${1-${DOCKER_FILE}}" --tag corretto-docker "$(dirname "${1-${DO
 
 corretto_version=$(echo "${2-${DOCKER_FILE}}" | rev | cut -d'/' -f4 | rev)
 install=$(echo "${3-${DOCKER_FILE}}" | rev | cut -d'/' -f3 | rev)
+if [[ "${install}" =~ (headless|headful) ]]; then
+  install="jre"
+fi
 # 3. Test using container-structure-test.
 build/tool/container-structure-test-${cst_ostype}-amd64 test \
     --image corretto-docker \

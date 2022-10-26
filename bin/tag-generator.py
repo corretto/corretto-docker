@@ -8,8 +8,14 @@ def generate_tags(key, version):
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
 
     al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full",f"{key}-al2-jdk"]
+    al2022_tags = [f"{key}-al2022-RC",  f"{expanded_version}-al2022-RC" ,f"{key}-al2022-jdk"]
     if key == '8':
         al2_tags.append('latest')
+    else:
+        # 11 + has headless and heaful for AL2022+
+        al2022_tags.append(f"{key}-headless-al2022-RC")
+        al2022_tags.append(f"{key}-headful-al2022-RC")
+
     print("Tags: " + ", ".join(al2_tags) + "")
     print("Architectures: amd64, arm64v8")
     print(f"Directory: {key}/jdk/al2\n")
@@ -33,7 +39,7 @@ def generate_tags(key, version):
 def main():
     with open('versions.json','r') as version_file:
         versions = json.load(version_file)
-    
+
     with open('.tags', 'w') as tag_file:
         for key in versions:
             generate_tags(key, versions[key])

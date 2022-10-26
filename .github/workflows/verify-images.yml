@@ -2,7 +2,7 @@ name: Verify Docker Images
 
 on: [push, pull_request]
 
-jobs: 
+jobs:
   verify-corretto:
     name: Verify Corretto JDK Images
     runs-on: ubuntu-latest
@@ -17,6 +17,35 @@ jobs:
         uses: actions/checkout@v2
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+  verify-corretto-8-on-al2022:
+    name: Verify Corretto 8 Images on AL2022
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 8 ]
+        package: [ jdk, jre ]
+        platform: [ al2022 ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+  verify-corretto-11-plus-on-al2022:
+    name: Verify Corretto 11+ Images on AL2022
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 11, 17 ]
+        package: [ jdk, headful, headless ]
+        platform: [ al2022 ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+
   verify-corretto-on-alpine:
     name: Verify Corretto JDK Images on Alpine
     runs-on: ubuntu-latest
@@ -30,7 +59,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Test Corretto ${{ matrix.version }} jre package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/jdk/alpine/${{ matrix.os_version }}/Dockerfile" ${{ matrix.version }} jdk
-      - name: Test Corretto JRE 
+      - name: Test Corretto JRE
         if : ${{ matrix.version == '8' }}
         run: ./bin/test-image.sh "${{ matrix.version }}/jre/alpine/${{ matrix.os_version }}/Dockerfile" ${{ matrix.version }} jre
-
