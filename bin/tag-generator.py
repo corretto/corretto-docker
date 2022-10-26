@@ -3,6 +3,8 @@ import json
 DEFAULT_ALPINE_VERSION = '3.16'
 ALPINE_VERSIONS = ['3.13','3.14', '3.15', '3.16']
 
+LTS_VERSIONS = [ "8", "11", "17"]
+
 def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
@@ -11,14 +13,25 @@ def generate_tags(key, version):
     al2022_tags = [f"{key}-al2022-RC",  f"{expanded_version}-al2022-RC" ,f"{key}-al2022-jdk"]
     if key == '8':
         al2_tags.append('latest')
-    else:
-        # 11 + has headless and heaful for AL2022+
-        al2022_tags.append(f"{key}-headless-al2022-RC")
-        al2022_tags.append(f"{key}-headful-al2022-RC")
+
 
     print("Tags: " + ", ".join(al2_tags) + "")
     print("Architectures: amd64, arm64v8")
     print(f"Directory: {key}/jdk/al2\n")
+
+    print("Tags: " + ", ".join(al2022_tags) + "")
+    print("Architectures: amd64, arm64v8")
+    print(f"Directory: {key}/jdk/al2022\n")
+
+    if key == '8':
+        print("Tags: " + ", ".join([f"{key}-al2022-RC-jre",  f"{expanded_version}-al2022-RC-jre"]))
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/jdk/al2022\n")
+    else:
+        if key in LTS_VERSIONS:
+            print("Tags: " + ", ".join([f"{key}-al2022-RC-headful",  f"{expanded_version}-al2022-RC-headful"]))
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/headful/al2022\n")
 
     for alpine_version in ALPINE_VERSIONS:
         alpine_tags = [f"{key}-alpine{alpine_version}", f"{expanded_version}-alpine{alpine_version}", f"{key}-alpine{alpine_version}-full", f"{key}-alpine{alpine_version}-jdk"]
