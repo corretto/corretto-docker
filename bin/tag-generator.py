@@ -19,16 +19,19 @@ def generate_tags(key, version):
     print("Architectures: amd64, arm64v8")
     print(f"Directory: {key}/jdk/al2\n")
 
-    print("Tags: " + ", ".join(al2022_tags) + "")
-    print("Architectures: amd64, arm64v8")
-    print(f"Directory: {key}/jdk/al2022\n")
-
-    if key == '8':
-        print("Tags: " + ", ".join([f"{key}-al2022-RC-jre",  f"{expanded_version}-al2022-RC-jre"]))
+    if key in LTS_VERSIONS:
+        print("Tags: " + ", ".join(al2022_tags) + "")
         print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/jdk/al2022\n")
-    else:
-        if key in LTS_VERSIONS:
+        if key == '8':
+            print("Tags: " + ", ".join([f"{key}-al2022-RC-jre",  f"{expanded_version}-al2022-RC-jre"]))
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/jdk/al2022\n")
+        else:
+            print("Tags: " + ", ".join([f"{key}-al2022-RC-headless",  f"{expanded_version}-al2022-RC-headless"]))
+            print("Architectures: amd64, arm64v8")
+            print(f"Directory: {key}/headless/al2022\n")
+
             print("Tags: " + ", ".join([f"{key}-al2022-RC-headful",  f"{expanded_version}-al2022-RC-headful"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/headful/al2022\n")
