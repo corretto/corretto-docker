@@ -13,7 +13,8 @@ RUN set -eux \
     && popd \
     && rm -rf /usr/lib/jvm/java-11-amazon-corretto.$(uname -m)/lib/src.zip \
     && rm -rf ${CORRETO_TEMP} \
-    && dnf clean all
+    && dnf clean all \
+    && sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf
 
 ENV LANG C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto
