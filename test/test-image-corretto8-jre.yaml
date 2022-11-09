@@ -1,7 +1,7 @@
 schemaVersion: "2.0.0"
 
 metadataTest:
-  env:
+  envVars:
     - key: LANG
       value: C.UTF-8
 
