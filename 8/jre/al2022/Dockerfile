@@ -8,9 +8,11 @@ RUN set -eux \
     && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
     && CORRETO_TEMP=$(mktemp -d) \
     && pushd ${CORRETO_TEMP} \
-    && curl -O https://corretto.aws/downloads/resources/${resouce_version}/java-1.8.0-amazon-corretto-$version.amzn2022.$(uname -m).rpm \
-    && VERIFIED_COUNT=$(rpm -K ${CORRETO_TEMP}/*.rpm | grep -c ": digests signatures OK$") \
-    && [ 1 -eq ${VERIFIED_COUNT} ] \
+    && RPM_LIST=("java-1.8.0-amazon-corretto-$version.amzn2022.$(uname -m).rpm") \
+    && for rpm in ${RPM_LIST[@]}; do \
+    curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
+    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
+    done \
     && dnf install -y ${CORRETO_TEMP}/*.rpm \
     && alternatives --install /usr/lib/jvm/java-1.8.0-amazon-corretto java-1.8.0-amazon-corretto /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m) 100 \
     && popd \

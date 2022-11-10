@@ -6,9 +6,11 @@ RUN set -eux \
     && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
     && CORRETO_TEMP=$(mktemp -d) \
     && pushd ${CORRETO_TEMP} \
-    && curl -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/java-11-amazon-corretto-headless-$version.amzn2022.$(uname -m).rpm \
-    && VERIFIED_COUNT=$(rpm -K ${CORRETO_TEMP}/*.rpm | grep -c ": digests signatures OK$") \
-    && [ 1 -eq ${VERIFIED_COUNT} ] \
+    && RPM_LIST=("java-11-amazon-corretto-headless-$version.amzn2022.$(uname -m).rpm") \
+    && for rpm in ${RPM_LIST[@]}; do \
+    curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
+    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
+    done \
     && dnf install -y ${CORRETO_TEMP}/*.rpm \
     && popd \
     && rm -rf /usr/lib/jvm/java-11-amazon-corretto.$(uname -m)/lib/src.zip \
