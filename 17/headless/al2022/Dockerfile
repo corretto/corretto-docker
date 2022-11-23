@@ -8,7 +8,7 @@ RUN set -eux \
     && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
     && CORRETO_TEMP=$(mktemp -d) \
     && pushd ${CORRETO_TEMP} \
-    && RPM_LIST=("java-17-amazon-corretto-headless-$version.amzn2022.$(uname -m).rpm" "java-17-amazon-corretto-$version.amzn2022.$(uname -m).rpm") \
+    && RPM_LIST=("java-17-amazon-corretto-headless-$version.amzn2022.${package_version}.$(uname -m).rpm" "java-17-amazon-corretto-$version.amzn2022.${package_version}.$(uname -m).rpm") \
     && for rpm in ${RPM_LIST[@]}; do \
     curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
