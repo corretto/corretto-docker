@@ -1,7 +1,7 @@
 import json
 
-DEFAULT_ALPINE_VERSION = '3.16'
-ALPINE_VERSIONS = ['3.13','3.14', '3.15', '3.16']
+DEFAULT_ALPINE_VERSION = '3.17'
+ALPINE_VERSIONS = ['3.13', '3.14', '3.15', '3.16', '3.17']
 
 LTS_VERSIONS = [ "8", "11", "17"]
 
