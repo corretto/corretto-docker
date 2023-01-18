@@ -1,6 +1,6 @@
 FROM amazonlinux:2022
 
-ARG version=11.0.17.8-1
+ARG version=11.0.18.10-1
 
 RUN set -eux \
     && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2022 \
