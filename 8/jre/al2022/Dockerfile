@@ -1,9 +1,9 @@
 FROM amazonlinux:2022
 
-ARG version=1.8.0_352.b08-1
+ARG version=1.8.0_362.b08-1
 
 RUN set -eux \
-    && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$3"."$4"."$5"."$6}') \
+    && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
     && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2022 \
     && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
     && CORRETO_TEMP=$(mktemp -d) \
