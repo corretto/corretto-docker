@@ -8,24 +8,23 @@ The docker images are available on [Amazon Corretto Official Images](https://hub
 
 To use Amazon Corretto Official Images from Docker hub run
 ```
-docker pull amazoncorretto:11
+docker pull amazoncorretto:latest
 ```
 
 The docker images are also available on **Amazon ECR**.
 
-To use the docker images from Amazon ECR, you would need to authenticate with the ECR registry (id: 489478819445) with the
-help of instruction from [here](https://aws.amazon.com/blogs/compute/authenticating-amazon-ecr-repositories-for-docker-cli-with-credential-helper/).
-Once authenticated, Amazon Corretto docker images can be pulled using command
+To use the docker images from Amazon ECR, avilable images can be found in the public ECR repository. 
+
+To use the Corretto ECR instance of the following commands:
 
 ```
-docker pull 489478819445.dkr.ecr.us-west-2.amazonaws.com/amazoncorretto:latest
-docker run -it 489478819445.dkr.ecr.us-west-2.amazonaws.com/amazoncorretto:latest /bin/bash
+docker pull public.ecr.aws/amazoncorretto/amazoncorretto:latest
+docker run -it public.ecr.aws/amazoncorretto/amazoncorretto:latest /bin/bash/amazoncorretto:latest /bin/bash
 ```
 
-You can view the available tags, run
-```
-aws ecr list-images --region us-west-2 --registry-id 489478819445 --repository-name amazoncorretto | jq -r '.imageIds[] | .imageTag'
-```
+You can see the list of available images by going to:
+https://gallery.ecr.aws/amazoncorretto/amazoncorretto
+
 
 
 # Supported Tags
