@@ -13,9 +13,9 @@ docker pull amazoncorretto:latest
 
 The docker images are also available on **Amazon ECR**.
 
-To use the docker images from Amazon ECR, avilable images can be found in the public ECR repository. 
+To get Corretto docker images from Amazon ECR please see [Amazon Corretto's ECR Public Gallery](https://gallery.ecr.aws/amazoncorretto/amazoncorretto) as well as the [Docker Official Images ECR Public Gallery](https://gallery.ecr.aws/docker/library/amazoncorretto)
 
-To use the Corretto ECR instance of the following commands:
+To use docker images from Corretto ECR Public Gallery run the following commands:
 
 ```
 docker pull public.ecr.aws/amazoncorretto/amazoncorretto:latest
