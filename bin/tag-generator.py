@@ -10,7 +10,7 @@ def generate_tags(key, version):
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
 
     al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full",f"{key}-al2-jdk"]
-    al2022_tags = [f"{key}-al2022-RC",  f"{expanded_version}-al2022-RC" ,f"{key}-al2022-jdk"]
+    al2023_tags = [f"{key}-al2023-RC",  f"{expanded_version}-al2023-RC" ,f"{key}-al2023-jdk"]
     if key == '8':
         al2_tags.append('latest')
 
@@ -20,21 +20,21 @@ def generate_tags(key, version):
     print(f"Directory: {key}/jdk/al2\n")
 
     if key in LTS_VERSIONS:
-        print("Tags: " + ", ".join(al2022_tags) + "")
+        print("Tags: " + ", ".join(al2023_tags) + "")
         print("Architectures: amd64, arm64v8")
-        print(f"Directory: {key}/jdk/al2022\n")
+        print(f"Directory: {key}/jdk/al2023\n")
         if key == '8':
-            print("Tags: " + ", ".join([f"{key}-al2022-RC-jre",  f"{expanded_version}-al2022-RC-jre"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-RC-jre",  f"{expanded_version}-al2023-RC-jre"]))
             print("Architectures: amd64, arm64v8")
-            print(f"Directory: {key}/jdk/al2022\n")
+            print(f"Directory: {key}/jdk/al2023\n")
         else:
-            print("Tags: " + ", ".join([f"{key}-al2022-RC-headless",  f"{expanded_version}-al2022-RC-headless"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-RC-headless",  f"{expanded_version}-al2023-RC-headless"]))
             print("Architectures: amd64, arm64v8")
-            print(f"Directory: {key}/headless/al2022\n")
+            print(f"Directory: {key}/headless/al2023\n")
 
-            print("Tags: " + ", ".join([f"{key}-al2022-RC-headful",  f"{expanded_version}-al2022-RC-headful"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-RC-headful",  f"{expanded_version}-al2023-RC-headful"]))
             print("Architectures: amd64, arm64v8")
-            print(f"Directory: {key}/headful/al2022\n")
+            print(f"Directory: {key}/headful/al2023\n")
 
     for alpine_version in ALPINE_VERSIONS:
         alpine_tags = [f"{key}-alpine{alpine_version}", f"{expanded_version}-alpine{alpine_version}", f"{key}-alpine{alpine_version}-full", f"{key}-alpine{alpine_version}-jdk"]
