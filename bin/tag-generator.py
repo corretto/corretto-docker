@@ -10,7 +10,7 @@ def generate_tags(key, version):
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
 
     al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full",f"{key}-al2-jdk"]
-    al2023_tags = [f"{key}-al2023-RC",  f"{expanded_version}-al2023-RC" ,f"{key}-al2023-jdk"]
+    al2023_tags = [f"{key}-al2023",  f"{expanded_version}-al2023" ,f"{key}-al2023-jdk"]
     if key == '8':
         al2_tags.append('latest')
 
@@ -24,15 +24,15 @@ def generate_tags(key, version):
         print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/jdk/al2023\n")
         if key == '8':
-            print("Tags: " + ", ".join([f"{key}-al2023-RC-jre",  f"{expanded_version}-al2023-RC-jre"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-jre",  f"{expanded_version}-al2023-jre"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/jdk/al2023\n")
         else:
-            print("Tags: " + ", ".join([f"{key}-al2023-RC-headless",  f"{expanded_version}-al2023-RC-headless"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-headless",  f"{expanded_version}-al2023-headless"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/headless/al2023\n")
 
-            print("Tags: " + ", ".join([f"{key}-al2023-RC-headful",  f"{expanded_version}-al2023-RC-headful"]))
+            print("Tags: " + ", ".join([f"{key}-al2023-headful",  f"{expanded_version}-al2023-headful"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/headful/al2023\n")
 
