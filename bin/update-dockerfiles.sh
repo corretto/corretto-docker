@@ -48,6 +48,7 @@ update_generic_linux() {
     if [ -d "./${MAJOR_RELEASE}/slim" ]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/al2/Dockerfile
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/debian/Dockerfile
+        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}.${corretto_version}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
         ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" README.md
     fi
 
@@ -70,7 +71,7 @@ done
 CORRETTO_8_GENERIC_LINUX=$(cat versions.json | jq -r '.["8"]' )
 CORRETTO_11_GENERIC_LINUX=$(cat versions.json | jq -r '.["11"]' )
 CORRETTO_17_GENERIC_LINUX=$(cat versions.json | jq -r '.["17"]' )
-CORRETTO_19_GENERIC_LINUX=$(cat versions.json | jq -r '.["19"]' )
+CORRETTO_20_GENERIC_LINUX=$(cat versions.json | jq -r '.["20"]' )
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
@@ -80,8 +81,8 @@ if [ ! -z "${CORRETTO_17_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_17_GENERIC_LINUX} 17
 fi
 
-if [ ! -z "${CORRETTO_19_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_19_GENERIC_LINUX} 19
+if [ ! -z "${CORRETTO_20_GENERIC_LINUX}" ]; then
+    update_generic_linux ${CORRETTO_20_GENERIC_LINUX} 20
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
