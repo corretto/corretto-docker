@@ -41,14 +41,14 @@ def generate_tags(key, version):
         if alpine_version == DEFAULT_ALPINE_VERSION:
             alpine_tags.extend([f"{key}-alpine", f"{expanded_version}-alpine", f"{key}-alpine-full", f"{key}-alpine-jdk"])
         print("Tags: " + ", ".join(alpine_tags) + "")
-        print("Architectures: amd64")
+        print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/jdk/alpine/{alpine_version}\n")
         if key == '8':
             alpine_jre_tags = [f"{key}-alpine{alpine_version}-jre", f"{expanded_version}-alpine{alpine_version}-jre"]
             if alpine_version == DEFAULT_ALPINE_VERSION:
                 alpine_jre_tags.extend([f"{key}-alpine-jre", f"{expanded_version}-alpine-jre"])
             print("Tags: " + ", ".join(alpine_jre_tags) + "")
-            print("Architectures: amd64")
+            print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/jre/alpine/{alpine_version}\n")
 
 
