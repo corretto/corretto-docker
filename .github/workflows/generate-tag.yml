@@ -1,11 +1,11 @@
 name: Verify repository and generate tags
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - main
 
-jobs: 
+jobs:
   verify-repository-content:
     name: Verify repository content
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
           python3 bin/tag-generator.py | tee ${GITHUB_WORKSPACE}/.tags
       - name: Add Comment to PR
         uses: actions/github-script@v5
-        with: 
+        with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             //Determine if new comment is required and generate comment text
