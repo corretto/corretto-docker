@@ -8,7 +8,7 @@ The docker images are available on [Amazon Corretto Official Images](https://hub
 
 To use Amazon Corretto Official Images from Docker hub run
 ```
-docker pull amazoncorretto:latest
+docker pull amazoncorretto:17
 ```
 
 The docker images are also available on **Amazon ECR**.
@@ -18,8 +18,8 @@ To get Corretto docker images from Amazon ECR please see [Amazon Corretto's ECR 
 To use docker images from Corretto ECR Public Gallery run the following commands:
 
 ```
-docker pull public.ecr.aws/amazoncorretto/amazoncorretto:latest
-docker run -it public.ecr.aws/amazoncorretto/amazoncorretto:latest /bin/bash/amazoncorretto:latest /bin/bash
+docker pull public.ecr.aws/amazoncorretto/amazoncorretto:17
+docker run -it public.ecr.aws/amazoncorretto/amazoncorretto:17 /bin/bash
 ```
 
 You can see the list of available images by going to:
