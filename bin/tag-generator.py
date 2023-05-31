@@ -9,7 +9,7 @@ def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
 
-    al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic" f"{expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
+    al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic", f"{expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
     al2023_tags = [f"{key}-al2023",  f"{expanded_version}-al2023" ,f"{key}-al2023-jdk"]
     if key == '8':
         al2_tags.append('latest')
