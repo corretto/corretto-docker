@@ -10,3 +10,8 @@ commandTests:
     command: "java"
     args: ["-version"]
     expectedError: ["OpenJDK Runtime Environment Corretto-11.*"]
+
+  - name: "JAVA_HOME points to the correct directory."
+    command: "$JAVA_HOME/bin/java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-11.*"]

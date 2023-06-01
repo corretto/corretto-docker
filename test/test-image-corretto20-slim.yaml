@@ -15,3 +15,8 @@ commandTests:
     command: "javac"
     args: ["-version"]
     expectedOutput: ["javac 20*"]
+
+  - name: "JAVA_HOME points to the correct directory."
+    command: "$JAVA_HOME/bin/java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-20.*"]
