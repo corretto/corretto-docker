@@ -51,7 +51,7 @@ update_generic_linux() {
         if [ -d ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2 ]; then
             echo "Updating"
 
-            ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/${IMAGE_TYPE}/Dockerfile
+            ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2/Dockerfile
         fi
     done
 
