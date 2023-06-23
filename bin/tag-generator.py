@@ -37,7 +37,7 @@ def generate_tags(key, version):
             print(f"Directory: {key}/headful/al2023\n")
 
     # For LTS versions with modular AmazonLinux packages we want to tag those images
-    native_package_modifier="al2-native-RC-"
+    native_package_modifier="al2-native-"
     if key in ["17"]:
         for image_type in ['headless', 'headful', 'jdk']:
             print(f"Tags: {key}-{native_package_modifier}{image_type}, {expanded_version}-{native_package_modifier}{image_type}")
