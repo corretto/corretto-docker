@@ -17,7 +17,7 @@ RUN set -eux \
     done \
     && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
     && popd \
-    && (find /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m) -name src.zip -delete || true) \
+    && (find /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m) -name "*src.zip" -delete || true) \
     && rm -rf ${CORRETO_TEMP} \
     && yum clean all \
     && rm -rf /var/cache/yum \
