@@ -28,6 +28,23 @@ update_musl_linux() {
     fi
 }
 
+verify_update() {
+    MAJOR_RELEASE=$1
+    VERSION_STRING=$2
+    pushd ${MAJOR_RELEASE}
+    DOCKERFILE_COUNT=$(find ./ -name Dockerfile |wc -l)
+    UPDATED_DOCKERFILE_COUNT=$(grep -rl "${VERSION_STRING}" --include Dockerfile |wc -l)
+
+    echo "Updated ${UPDATED_DOCKERFILE_COUNT} files for Corretto-${MAJOR_RELEASE}"
+    if [[ ${DOCKERFILE_COUNT} == ${UPDATED_DOCKERFILE_COUNT} ]]; then
+        echo "All files updated"
+    else
+        echo "Error: ${DOCKERFILE_COUNT} updated were expected!"
+        exit 1
+    fi
+    popd
+}
+
 update_generic_linux() {
     CORRETTO_VERSION=$1
     MAJOR_RELEASE=$2
@@ -63,7 +80,6 @@ update_generic_linux() {
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}.${corretto_version}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
         ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" README.md
     fi
-
 }
 
 while [ "$1" != "" ]; do
@@ -108,6 +124,7 @@ if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2023/Dockerfile
     ${SED} "s/ARG version=.*/ARG version=8.${jdk_version}.${jdk_build}-${corretto_version}/g" ./8/jdk/debian/Dockerfile
 
+
     ${SED} "s/8u[0-9]*,/8u${jdk_version},/g" README.md
     ${SED} "s/8u[0-9]*-al2/8u${jdk_version}-al2/g" README.md
 fi
@@ -115,3 +132,9 @@ fi
 find . -name "*.bkp" | xargs rm -rf
 
 python3 bin/apply-template.py
+
+# 8 is special and doesn't have a consistent version string, so we just use the update version.
+verify_update 8 ${jdk_version}
+verify_update 11 ${CORRETTO_11_GENERIC_LINUX}
+verify_update 17 ${CORRETTO_17_GENERIC_LINUX}
+verify_update 20 ${CORRETTO_20_GENERIC_LINUX}
