@@ -4,6 +4,7 @@ DEFAULT_ALPINE_VERSION = '3.18'
 ALPINE_VERSIONS = ['3.15', '3.16', '3.17', '3.18']
 
 LTS_VERSIONS = [ "8", "11", "17"]
+AL2023_GENERIC_VERSIONS = ["20"]
 
 def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
@@ -11,6 +12,7 @@ def generate_tags(key, version):
 
     al2_tags = [f"{key}", f"{expanded_version}", f"{expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic", f"{expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
     al2023_tags = [f"{key}-al2023",  f"{expanded_version}-al2023" ,f"{key}-al2023-jdk"]
+    al2023_generic_tags = [f"{key}-al2023-generic", f"{expanded_version}-al2023-generic", f"{key}-al2023-generic-jdk"]
     if key == '8':
         al2_tags.append('latest')
 
@@ -35,6 +37,11 @@ def generate_tags(key, version):
             print("Tags: " + ", ".join([f"{key}-al2023-headful",  f"{expanded_version}-al2023-headful"]))
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/headful/al2023\n")
+
+    if key in AL2023_GENERIC_VERSIONS:
+        print("Tags: " + ", ".join(al2023_generic_tags) + "")
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/jdk/al2023-generic\n")
 
     # For LTS versions with modular AmazonLinux packages we want to tag those images
     native_package_modifier="al2-native-"

@@ -53,6 +53,7 @@ update_generic_linux() {
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
     ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
+    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile
 
     if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile

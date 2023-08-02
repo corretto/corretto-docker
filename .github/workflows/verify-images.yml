@@ -63,6 +63,21 @@ jobs:
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
 
+  verify-corretto-FR-on-al2023:
+    name: Verify Corretto FR Images on AL2023
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 20 ]
+        package: [ jdk ]
+        platform: [ al2023-generic ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+
   verify-corretto-on-alpine:
     name: Verify Corretto JDK Images on Alpine
     runs-on: ubuntu-latest
