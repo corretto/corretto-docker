@@ -53,7 +53,6 @@ update_generic_linux() {
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
     ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
-    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile
 
     if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile
@@ -81,6 +80,17 @@ update_generic_linux() {
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}.${corretto_version}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
         ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" README.md
     fi
+}
+
+update_al2023_generic_linux() {
+    CORRETTO_VERSION=$1
+    MAJOR_RELEASE=$2
+
+    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
+    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
+    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
+
+    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile
 }
 
 while [ "$1" != "" ]; do
@@ -112,6 +122,7 @@ fi
 
 if [ ! -z "${CORRETTO_20_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_20_GENERIC_LINUX} 20
+    update_al2023_generic_linux ${CORRETTO_20_GENERIC_LINUX} 20
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
