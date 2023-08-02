@@ -22,13 +22,7 @@ RUN set -eux \
     && dnf install -y java-20-amazon-corretto-devel-$version \
     && (find /usr/lib/jvm/java-20-amazon-corretto -name src.zip -delete || true) \
     && dnf remove -y findutils \
-    && dnf install -y fontconfig \
-    && dnf install -y freetype \
-    && dnf install -y libjpeg \
-    && dnf install -y dejavu-sans-fonts \
-    && dnf install -y dejavu-serif-fonts \
-    && dnf install -y dejavu-sans-mono-fonts \
-    && dnf install -y libjpeg \
+    && dnf install -y fontconfig freetype libjpeg dejavu-sans-fonts dejavu-serif-fonts dejavu-sans-mono-fonts libjpeg \
     && dnf clean all
 
 ENV LANG C.UTF-8
