@@ -63,8 +63,8 @@ jobs:
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
 
-  verify-corretto-20-on-al2023:
-    name: Verify Corretto 20 Images on AL2023
+  verify-corretto-FR-on-al2023:
+    name: Verify Corretto FR Images on AL2023
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
