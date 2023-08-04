@@ -1,4 +1,4 @@
-FROM amazonlinux:{{OS_VERSION}}
+FROM amazonlinux:2023
 
 ARG version={{CORRETTO_VERSION}}
 ARG package_version=1

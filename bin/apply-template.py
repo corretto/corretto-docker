@@ -9,9 +9,10 @@ def process_template_files(major_version, version, platform):
 
     template = templateEnv.get_template(f"{platform}.Dockerfile.template")
     input_parameter = {}
+    if major_version == '8' and platform!= 'alpine':
+        version = '1.8.0'
     input_parameter['CORRETTO_VERSION'] = version
     input_parameter['MAJOR_VERSION'] = major_version
-    input_parameter['JDK_VERSION'] = '1.8.0'
     if platform == 'alpine':
         # Update .github/workflows/verify-images.yml as well when alpine versions changes
         os_versions = ['3.15', '3.16', '3.17', '3.18']
@@ -34,15 +35,16 @@ def process_template_files(major_version, version, platform):
 
     elif 'headless' in platform or 'headful' in platform:
         head_variant = 'headless' if 'headless' in platform else 'headful'
-        if major_version==11 or major_version==17:
+        print("executin headless or headful",platform, major_version)
+        if major_version=='11' or major_version=='17':
             os.makedirs(f"{major_version}/{head_variant}/{platform}/", exist_ok=True)
             with open(f"{major_version}/{head_variant}/{platform}/Dockerfile", 'w') as output:
                 output.write(template.render(**input_parameter))
 
     elif platform == 'al2023-generic':
-        if major_version==20:
+        if major_version=='20':
             os.makedirs(f"{major_version}/jdk/{platform}/", exist_ok=True)
-            with open(f"{major_version}/{head_variant}/{platform}/Dockerfile", 'w') as output:
+            with open(f"{major_version}/jdk/{platform}/Dockerfile", 'w') as output:
                 output.write(template.render(**input_parameter))
 
     else:            
