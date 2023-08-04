@@ -1,6 +1,7 @@
 FROM amazonlinux:2
 
 ARG version={{CORRETTO_VERSION}}
+
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.') \
     && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2 \

@@ -3,6 +3,7 @@ FROM amazonlinux:2023
 ARG version={{CORRETTO_VERSION}}
 # In addition to installing the Amazon corretto, we also install
 # libs that are needed for jdk to be functional
+
 # The logic and code related to Fingerprint is contributed by @tianon in a Github PR's Conversation
 # Comment = https://github.com/docker-library/official-images/pull/7459#issuecomment-592242757
 # PR = https://github.com/docker-library/official-images/pull/7459

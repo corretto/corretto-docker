@@ -35,7 +35,6 @@ def process_template_files(major_version, version, platform):
 
     elif 'headless' in platform or 'headful' in platform:
         head_variant = 'headless' if 'headless' in platform else 'headful'
-        print("executin headless or headful",platform, major_version)
         if major_version=='11' or major_version=='17':
             os.makedirs(f"{major_version}/{head_variant}/{platform}/", exist_ok=True)
             with open(f"{major_version}/{head_variant}/{platform}/Dockerfile", 'w') as output:
