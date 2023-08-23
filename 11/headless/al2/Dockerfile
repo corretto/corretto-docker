@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=11.0.20.8-1
+ARG version=11.0.20.9-1
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.') \

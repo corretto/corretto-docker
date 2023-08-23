@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=20.0.2.9-1
+ARG version=20.0.2.10-1
 # In addition to installing the Amazon corretto, we also install
 # libs that are needed for jdk to be functional
 
