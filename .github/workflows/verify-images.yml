@@ -118,7 +118,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 17, 21 ]
+        version: [ 17 ]
         package: [ headful ]
         platform: [ al2 ]
     steps:
@@ -132,7 +132,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 11, 17, 21 ]
+        version: [ 11, 17 ]
         package: [ headless ]
         platform: [ al2 ]
     steps:
