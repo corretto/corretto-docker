@@ -13,14 +13,16 @@ ARG version=11.0.20.9-1
 RUN set -eux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg software-properties-common fontconfig java-common \
+    curl ca-certificates gnupg software-properties-common fontconfig java-common \
     && curl -fL https://apt.corretto.aws/corretto.key | apt-key add - \
     && add-apt-repository 'deb https://apt.corretto.aws stable main' \
     && mkdir -p /usr/share/man/man1 || true \
     && apt-get update \
     && apt-get install -y java-11-amazon-corretto-jdk=1:$version \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        curl gnupg software-properties-common
+    curl gnupg software-properties-common
 
 ENV LANG C.UTF-8
+# JVM by default only uses 25% of container memory, since we are running only one JVM we can safely boost this with a bit of extra room for agents/sidecars.
+ENV JAVA_TOOL_OPTIONS "-XX:InitialRAMPercentage=60.0 -XX:MaxRAMPercentage=80.0"
 ENV JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto

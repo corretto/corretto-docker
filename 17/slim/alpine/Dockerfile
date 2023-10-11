@@ -22,8 +22,10 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     mv /opt/corretto-slim /usr/lib/jvm/java-17-amazon-corretto && \
     ln -sfn /usr/lib/jvm/java-17-amazon-corretto /usr/lib/jvm/default-jvm
 
-    
+
 
 ENV LANG C.UTF-8
+# JVM by default only uses 25% of container memory, since we are running only one JVM we can safely boost this with a bit of extra room for agents/sidecars.
+ENV JAVA_TOOL_OPTIONS "-XX:InitialRAMPercentage=60.0 -XX:MaxRAMPercentage=80.0"
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
 ENV PATH=$PATH:/usr/lib/jvm/default-jvm/bin
