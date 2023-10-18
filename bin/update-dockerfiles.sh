@@ -103,7 +103,6 @@ done
 CORRETTO_8_GENERIC_LINUX=$(cat versions.json | jq -r '.["8"]' )
 CORRETTO_11_GENERIC_LINUX=$(cat versions.json | jq -r '.["11"]' )
 CORRETTO_17_GENERIC_LINUX=$(cat versions.json | jq -r '.["17"]' )
-CORRETTO_20_GENERIC_LINUX=$(cat versions.json | jq -r '.["20"]' )
 CORRETTO_21_GENERIC_LINUX=$(cat versions.json | jq -r '.["21"]' )
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
@@ -112,10 +111,6 @@ fi
 
 if [ ! -z "${CORRETTO_17_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_17_GENERIC_LINUX} 17
-fi
-
-if [ ! -z "${CORRETTO_20_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_20_GENERIC_LINUX} 20
 fi
 
 if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
@@ -146,5 +141,4 @@ python3 bin/apply-template.py
 verify_update 8 ${jdk_version}
 verify_update 11 ${CORRETTO_11_GENERIC_LINUX}
 verify_update 17 ${CORRETTO_17_GENERIC_LINUX}
-verify_update 20 ${CORRETTO_20_GENERIC_LINUX}
 verify_update 21 ${CORRETTO_21_GENERIC_LINUX}
