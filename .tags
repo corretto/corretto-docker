@@ -18,14 +18,6 @@ Tags: 8-al2-native-jdk, 8u382-al2-native-jdk
 Architectures: amd64, arm64v8
 Directory: 8/jdk/al2
 
-Tags: 8-alpine3.15, 8u382-alpine3.15, 8-alpine3.15-full, 8-alpine3.15-jdk
-Architectures: amd64, arm64v8
-Directory: 8/jdk/alpine/3.15
-
-Tags: 8-alpine3.15-jre, 8u382-alpine3.15-jre
-Architectures: amd64, arm64v8
-Directory: 8/jre/alpine/3.15
-
 Tags: 8-alpine3.16, 8u382-alpine3.16, 8-alpine3.16-full, 8-alpine3.16-jdk
 Architectures: amd64, arm64v8
 Directory: 8/jdk/alpine/3.16
@@ -74,10 +66,6 @@ Tags: 11-al2-native-jdk, 11.0.20-al2-native-jdk
 Architectures: amd64, arm64v8
 Directory: 11/jdk/al2
 
-Tags: 11-alpine3.15, 11.0.20-alpine3.15, 11-alpine3.15-full, 11-alpine3.15-jdk
-Architectures: amd64, arm64v8
-Directory: 11/jdk/alpine/3.15
-
 Tags: 11-alpine3.16, 11.0.20-alpine3.16, 11-alpine3.16-full, 11-alpine3.16-jdk
 Architectures: amd64, arm64v8
 Directory: 11/jdk/alpine/3.16
@@ -118,10 +106,6 @@ Tags: 17-al2-native-jdk, 17.0.8-al2-native-jdk
 Architectures: amd64, arm64v8
 Directory: 17/jdk/al2
 
-Tags: 17-alpine3.15, 17.0.8-alpine3.15, 17-alpine3.15-full, 17-alpine3.15-jdk
-Architectures: amd64, arm64v8
-Directory: 17/jdk/alpine/3.15
-
 Tags: 17-alpine3.16, 17.0.8-alpine3.16, 17-alpine3.16-full, 17-alpine3.16-jdk
 Architectures: amd64, arm64v8
 Directory: 17/jdk/alpine/3.16
@@ -141,10 +125,6 @@ Directory: 20/jdk/al2-generic
 Tags: 20-al2023-generic, 20.0.2-al2023-generic, 20-al2023-generic-jdk
 Architectures: amd64, arm64v8
 Directory: 20/jdk/al2023-generic
-
-Tags: 20-alpine3.15, 20.0.2-alpine3.15, 20-alpine3.15-full, 20-alpine3.15-jdk
-Architectures: amd64, arm64v8
-Directory: 20/jdk/alpine/3.15
 
 Tags: 20-alpine3.16, 20.0.2-alpine3.16, 20-alpine3.16-full, 20-alpine3.16-jdk
 Architectures: amd64, arm64v8
