@@ -20,7 +20,7 @@ RUN set -eux \
     && apt-get update \
     && apt-get install -y java-21-amazon-corretto-jdk=1:$version \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-        curl gnupg software-properties-common
+        curl gnupg software-properties-common \
     && apt-get clean  \
     && rm -rf /var/lib/apt/lists/*
 
