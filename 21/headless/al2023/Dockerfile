@@ -1,7 +1,7 @@
 FROM amazonlinux:2023
 
-ARG version=21.0.1.12-1
-ARG package_version=2
+ARG version=21.0.2.13-1
+ARG package_version=1
 
 RUN set -eux \
     && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023 \
