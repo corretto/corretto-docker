@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=1.8.0_402.b06-1
+ARG version=1.8.0_402.b08-1
 
 
 RUN set -eux \
