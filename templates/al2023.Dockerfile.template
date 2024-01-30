@@ -1,0 +1,30 @@
+FROM amazonlinux:2023
+
+ARG version={{CORRETTO_VERSION}}{% if not version_8 %}
+ARG package_version=1{% endif %}
+
+RUN set -eux \{%if version_8 %}
+    && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \{% endif %}
+    && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023 \
+    && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
+    && CORRETO_TEMP=$(mktemp -d) \
+    && pushd ${CORRETO_TEMP} \{% if jre %}
+    && RPM_LIST=("java-{{CORRETTO_VERSION}}-amazon-corretto-$version.amzn2023.$(uname -m).rpm") \{% elif version_8 %}
+    && RPM_LIST=("java-{{CORRETTO_VERSION}}-amazon-corretto-$version.amzn2023.$(uname -m).rpm" "java-{{CORRETTO_VERSION}}-amazon-corretto-devel-$version.amzn2023.$(uname -m).rpm") \{% else %}
+    && RPM_LIST=("java-{{MAJOR_VERSION}}-amazon-corretto-headless-$version.amzn2023.${package_version}.$(uname -m).rpm" "java-{{MAJOR_VERSION}}-amazon-corretto-$version.amzn2023.${package_version}.$(uname -m).rpm" "java-{{MAJOR_VERSION}}-amazon-corretto-devel-$version.amzn2023.${package_version}.$(uname -m).rpm" "java-{{MAJOR_VERSION}}-amazon-corretto-jmods-$version.amzn2023.${package_version}.$(uname -m).rpm") \{% endif %}
+    && for rpm in ${RPM_LIST[@]}; do \
+    curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
+    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
+    done \
+    && dnf install -y ${CORRETO_TEMP}/*.rpm \{% if jre %}
+    && alternatives --install /usr/lib/jvm/java-{{CORRETTO_VERSION}}-amazon-corretto java-{{CORRETTO_VERSION}}-amazon-corretto /usr/lib/jvm/java-{{CORRETTO_VERSION}}-amazon-corretto.$(uname -m) 100 \{% endif %}
+    && popd \{%if version_8 %}
+    && rm -rf /usr/lib/jvm/java-{{CORRETTO_VERSION}}-amazon-corretto.$(uname -m)/lib/src.zip \{% else %}
+    && rm -rf /usr/lib/jvm/java-{{MAJOR_VERSION}}-amazon-corretto.$(uname -m)/lib/src.zip \{% endif %}
+    && rm -rf ${CORRETO_TEMP} \
+    && dnf clean all \{% if version_8 and not jre%}
+    && rm -rf /var/cache/yum \{% endif %}
+    && sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf
+
+ENV LANG C.UTF-8
+{% if jre %}ENV JAVA_HOME=/usr/lib/jvm/java-{{CORRETTO_VERSION}}-amazon-corretto/jre{% elif version_8 %}ENV JAVA_HOME=/usr/lib/jvm/java-{{CORRETTO_VERSION}}-amazon-corretto{% else %}ENV JAVA_HOME=/usr/lib/jvm/java-{{MAJOR_VERSION}}-amazon-corretto{% endif %}

@@ -1,7 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=1.8.0_402.b08-1
-
+ARG version=1.8.0
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
@@ -13,12 +12,12 @@ RUN set -eux \
     && for rpm in ${RPM_LIST[@]}; do \
     curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
     && echo $(rpm -K "${CORRETO_TEMP}/${rpm}") \
-    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: rsa sha1 (md5) pgp md5 OK" || exit 1; \
+    && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: rsa sha1 (md5) pgp md5 OK" || exit 1 \
     done \
-    && yum install -y $(yum deplist ${CORRETO_TEMP}/*.rpm |grep provider | grep -v log4j-cve | tr -s ' ' |cut -d ' ' -f 3 ) \
+    && yum install -y $(yum deplist "${CORRETO_TEMP}/${rpm}" |grep provider | grep -v log4j-cve | tr -s ' ' |cut -d ' ' -f 3 ); \
     && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
     && popd \
-    && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m)/lib/src.zip \
+    && (find /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m) -name "*src.zip" -delete || true) \
     && rm -rf ${CORRETO_TEMP} \
     && yum clean all \
     && rm -rf /var/cache/yum \

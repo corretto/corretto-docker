@@ -1,7 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=1.8.0_402.b08-1
-
+ARG version=1.8.0
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
@@ -11,7 +10,7 @@ RUN set -eux \
     && pushd ${CORRETO_TEMP} \
     && RPM_LIST=("java-1.8.0-amazon-corretto-$version.amzn2023.$(uname -m).rpm" "java-1.8.0-amazon-corretto-devel-$version.amzn2023.$(uname -m).rpm") \
     && for rpm in ${RPM_LIST[@]}; do \
-    curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
+    curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
     done \
     && dnf install -y ${CORRETO_TEMP}/*.rpm \
