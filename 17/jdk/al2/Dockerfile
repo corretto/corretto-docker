@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=17.0.10.7-1
+ARG version=17.0.10.7.1
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.') \
@@ -15,7 +15,7 @@ RUN set -eux \
     && if [[ ${rpm} != *jmods* ]]; then \
       yum install -y $(yum deplist "${CORRETO_TEMP}/${rpm}" |grep provider | grep -vE "log4j-cve|corretto" | tr -s ' ' |cut -d ' ' -f 3 ); \
       fi; \
-      done \
+    done \
     && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
     && popd \
     && (find /usr/lib/jvm/java-17-amazon-corretto.$(uname -m) -name src.zip -delete || true) \

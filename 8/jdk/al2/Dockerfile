@@ -1,7 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=1.8.0_402.b08-1
-
+ARG version=1.8.0
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
