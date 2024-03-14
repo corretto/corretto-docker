@@ -3,7 +3,7 @@ import json
 DEFAULT_ALPINE_VERSION = '3.19'
 ALPINE_VERSIONS = ['3.16', '3.17', '3.18', '3.19']
 
-LTS_VERSIONS = [ "8", "11", "17", "21"]
+LTS_VERSIONS = [ "8", "11", "17", "21", "22"]
 AL2023_GENERIC_VERSIONS = ["20"]
 
 def generate_tags(key, version):
