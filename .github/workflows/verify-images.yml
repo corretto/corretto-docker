@@ -27,7 +27,7 @@ jobs:
         version: [ 22 ]
         package: [ jdk ]
         platform: [ debian ]
-      steps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
