@@ -20,7 +20,7 @@ RUN set -ux \
     && add-apt-repository 'deb https://apt.corretto.aws stable main' \
     && mkdir -p /usr/share/man/man1 \
     && apt-get update \
-    && apt-get install zlib1g-dev \
+    && apt-get install -y zlib1g-dev \
     && apt-get install -y java-22-amazon-corretto-jdk=1:$version binutils \
     && jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
