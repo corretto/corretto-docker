@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+
   verify-corretto-22:
     name: Verify Corretto 22 JDK Images
     runs-on: ubuntu-latest
