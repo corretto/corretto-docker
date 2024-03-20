@@ -4,7 +4,7 @@ SED="sed -i"
 
 sed --version 2>/dev/null || SED="sed -i.bkp"
 
-LTS_VERSIONS=("8" "11" "17" "21" "22")
+LTS_VERSIONS=("8" "11" "17" "21")
 
 usage() {
     echo "usage: update-dockerfiles.sh [--help]"
