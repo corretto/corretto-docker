@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=22.0.0.36-2
+ARG version=22.0.0.37-1
 ARG package_version=1
 
 RUN set -eux \
