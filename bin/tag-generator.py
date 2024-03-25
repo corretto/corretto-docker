@@ -4,7 +4,7 @@ DEFAULT_ALPINE_VERSION = '3.19'
 ALPINE_VERSIONS = ['3.16', '3.17', '3.18', '3.19']
 
 LTS_VERSIONS = [ "8", "11", "17", "21"]
-AL2023_GENERIC_VERSIONS = ["20"]
+AL2023_GENERIC_VERSIONS = ["22"]
 
 def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
