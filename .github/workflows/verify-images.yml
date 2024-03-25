@@ -18,6 +18,21 @@ jobs:
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
 
+  verify-corretto-22:
+    name: Verify Corretto 22 JDK Images
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 22 ]
+        package: [ jdk ]
+        platform: [ debian ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+
   verify-corretto-slim:
     name: Verify Corretto Slim Images
     runs-on: ubuntu-latest
@@ -27,6 +42,21 @@ jobs:
         version: [ 17, 21 ]
         package: [ slim ]
         platform: [ al2, alpine, debian ]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
+        run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
+
+  verify-corretto-slim-22:
+    name: Verify Corretto Slim Images
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [ 22 ]
+        package: [ slim ]
+        platform: [ alpine, debian ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -54,7 +84,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 11, 17, 21 ]
+        version: [ 11, 17, 21, 22 ]
         package: [ jdk, headful, headless ]
         platform: [ al2023 ]
     steps:
@@ -69,7 +99,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 8, 11, 17, 21 ]
+        version: [ 8, 11, 17, 21, 22 ]
         os_version: ["3.16", "3.17", "3.18", "3.19"]
     steps:
       - name: Checkout code

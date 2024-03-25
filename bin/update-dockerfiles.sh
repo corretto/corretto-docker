@@ -104,6 +104,7 @@ CORRETTO_8_GENERIC_LINUX=$(cat versions.json | jq -r '.["8"]' )
 CORRETTO_11_GENERIC_LINUX=$(cat versions.json | jq -r '.["11"]' )
 CORRETTO_17_GENERIC_LINUX=$(cat versions.json | jq -r '.["17"]' )
 CORRETTO_21_GENERIC_LINUX=$(cat versions.json | jq -r '.["21"]' )
+CORRETTO_22_GENERIC_LINUX=$(cat versions.json | jq -r '.["22"]' )
 
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
@@ -115,6 +116,10 @@ fi
 
 if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_21_GENERIC_LINUX} 21
+fi
+
+if [ ! -z "${CORRETTO_22_GENERIC_LINUX}" ]; then
+    update_generic_linux ${CORRETTO_22_GENERIC_LINUX} 22
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
@@ -142,3 +147,4 @@ verify_update 8 ${jdk_version}
 verify_update 11 ${CORRETTO_11_GENERIC_LINUX}
 verify_update 17 ${CORRETTO_17_GENERIC_LINUX}
 verify_update 21 ${CORRETTO_21_GENERIC_LINUX}
+verify_update 22 ${CORRETTO_22_GENERIC_LINUX}
