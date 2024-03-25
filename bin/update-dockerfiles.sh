@@ -4,8 +4,6 @@ SED="sed -i"
 
 sed --version 2>/dev/null || SED="sed -i.bkp"
 
-LTS_VERSIONS=("8" "11" "17" "21")
-
 usage() {
     echo "usage: update-dockerfiles.sh [--help]"
     echo ""
@@ -52,17 +50,19 @@ update_generic_linux() {
     jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
-    if [[ -f ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile ]]
-    then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile
+    if [[ -f ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile ]]; then
+        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
     fi
-
-    if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
+    if [[ -f ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile
+    fi
+    if [[ -f ./${MAJOR_RELEASE}/headful/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headful/al2023/Dockerfile
+    fi
+    if [[ -f ./${MAJOR_RELEASE}/headless/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headless/al2023/Dockerfile
     fi
+
 
     ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/debian/Dockerfile
 
@@ -78,8 +78,10 @@ update_generic_linux() {
 
     ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*,/${jdk_version},/g" README.md
     ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-al2/${jdk_version}-al2/g" README.md
-    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
+    if [[ -f ./${MAJOR_RELEASE}/slim/al2/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/al2/Dockerfile
+    fi
+    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/debian/Dockerfile
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}.${corretto_version}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
         ${SED} "s/${MAJOR_RELEASE}\.0\.[0-9]*-slim,/${jdk_version},/g" README.md
