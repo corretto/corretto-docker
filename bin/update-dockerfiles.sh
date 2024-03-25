@@ -5,6 +5,8 @@ SED="sed -i"
 sed --version 2>/dev/null || SED="sed -i.bkp"
 
 LTS_VERSIONS=("8" "11" "17" "21")
+AL2_VERSIONS=("8" "11" "17" "21")
+FR_VERSIONS=("22")
 
 usage() {
     echo "usage: update-dockerfiles.sh [--help]"
@@ -52,13 +54,15 @@ update_generic_linux() {
     jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
     jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
     corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
+    if [[ "${AL2_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
+        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
+    fi
     if [[ -f ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile ]]
     then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023-generic/Dockerfile
     fi
 
-    if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
+    if [[ "${LTS_VERSIONS[*]}" =~ ${MAJOR_RELEASE} || "${FR_VERSIONS[*]}" =~ ${MAJOR_RELEASE} ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headful/al2023/Dockerfile
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headless/al2023/Dockerfile
