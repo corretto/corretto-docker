@@ -53,10 +53,10 @@ update_generic_linux() {
     if [[ -f ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
     fi
-    if [[ -f ./${MAJOR_RELEASE}/headful/al2023-generic/Dockerfile ]]; then
+    if [[ -f ./${MAJOR_RELEASE}/headful/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headful/al2023/Dockerfile
     fi
-    if [[ -f ./${MAJOR_RELEASE}/headless/al2023-generic/Dockerfile ]]; then
+    if [[ -f ./${MAJOR_RELEASE}/headless/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headless/al2023/Dockerfile
     fi
 
