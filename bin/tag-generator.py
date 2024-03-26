@@ -4,6 +4,7 @@ DEFAULT_ALPINE_VERSION = '3.19'
 ALPINE_VERSIONS = ['3.16', '3.17', '3.18', '3.19']
 
 LTS_VERSIONS = [ "8", "11", "17", "21"]
+FR_VERSIONS = [ "22" ]
 def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
     expanded_version = f"{key}u{update}" if (key == '8') else f"{key}.0.{update}"
@@ -21,7 +22,7 @@ def generate_tags(key, version):
         al2_tags.append('latest')
 
 
-    if key in LTS_VERSIONS:
+    if key in LTS_VERSIONS or key in FR_VERSIONS:
         print("Tags: " + ", ".join(al2023_tags) + "")
         print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/jdk/al2023\n")
