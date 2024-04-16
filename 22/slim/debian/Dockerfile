@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 
-ARG version=22.0.0.37-1
+ARG version=22.0.1.8-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management
