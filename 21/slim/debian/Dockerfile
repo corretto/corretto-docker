@@ -24,6 +24,8 @@ RUN set -ux \
     && jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
             curl gnupg software-properties-common binutils java-21-amazon-corretto-jdk=1:$version \
+    && apt-get clean  \
+    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /usr/lib/jvm \
     && mv /opt/corretto-slim /usr/lib/jvm/java-21-amazon-corretto \
     && jdk_tools="java keytool rmid rmiregistry javac jaotc jlink jmod jhsdb jar jarsigner javadoc javap jcmd jconsole jdb jdeps jdeprscan jimage jinfo jmap jps jrunscript jshell jstack jstat jstatd serialver" \
