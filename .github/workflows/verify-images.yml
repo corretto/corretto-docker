@@ -18,13 +18,13 @@ jobs:
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
 
-  verify-corretto-22:
-    name: Verify Corretto 22 JDK Images
+  verify-corretto-22-plus:
+    name: Verify Corretto 22+ JDK Images
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        version: [ 22 ]
+        version: [ 22, 23 ]
         package: [ jdk ]
         platform: [ debian ]
     steps:
@@ -48,13 +48,13 @@ jobs:
       - name: Test Corretto ${{ matrix.version }} ${{ matrix.package }} package on ${{ matrix.platform }}
         run: ./bin/test-image.sh "${{ matrix.version }}/${{ matrix.package }}/${{ matrix.platform }}/Dockerfile" ${{ matrix.version }} ${{ matrix.package }}
 
-  verify-corretto-slim-22:
-    name: Verify Corretto Slim Images
+  verify-corretto-slim-22-plus:
+    name: Verify Corretto 22+ Slim Images
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        version: [ 22 ]
+        version: [ 22, 23 ]
         package: [ slim ]
         platform: [ alpine, debian ]
     steps:
@@ -84,7 +84,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 11, 17, 21, 22 ]
+        version: [ 11, 17, 21, 22, 23 ]
         package: [ jdk, headful, headless ]
         platform: [ al2023 ]
     steps:
@@ -99,7 +99,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [ 8, 11, 17, 21, 22 ]
+        version: [ 8, 11, 17, 21, 22, 23 ]
         os_version: ["3.17", "3.18", "3.19", "3.20"]
     steps:
       - name: Checkout code
