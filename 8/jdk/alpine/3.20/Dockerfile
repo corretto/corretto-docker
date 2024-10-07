@@ -16,7 +16,7 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     rm -rf /usr/lib/jvm/java-8-amazon-corretto/lib/src.zip
 
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
 ENV PATH=$PATH:/usr/lib/jvm/default-jvm/bin
