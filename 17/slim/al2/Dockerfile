@@ -63,5 +63,5 @@ RUN set -eux \
                  --slave /usr/bin/jstatd jstatd /usr/lib/jvm/java-17-amazon-corretto/bin/jstatd \
     && yum clean all
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
