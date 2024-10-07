@@ -21,5 +21,5 @@ RUN set -eux \
     && dnf clean all \
     && sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto/jre

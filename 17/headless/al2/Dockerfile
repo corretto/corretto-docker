@@ -22,5 +22,5 @@ RUN set -eux \
     && rm -rf /var/cache/yum \
     && sed -i '/localpkg_gpgcheck=1/d' /etc/yum.conf
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto

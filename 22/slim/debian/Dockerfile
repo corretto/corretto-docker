@@ -33,5 +33,5 @@ RUN set -ux \
        done
 
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/java-22-amazon-corretto
