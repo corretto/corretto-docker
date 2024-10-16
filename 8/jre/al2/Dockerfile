@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=1.8.0_422.b05-1
+ARG version=1.8.0_432.b06-1
 
 
 RUN set -eux \
