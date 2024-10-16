@@ -1,6 +1,6 @@
 FROM alpine:3.18
 
-ARG version=23.0.0.37.1
+ARG version=23.0.1.8.1
 
 # Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently.
 # The Corretto team will update this file but you may see a few days' delay.
