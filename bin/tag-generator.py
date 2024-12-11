@@ -1,7 +1,7 @@
 import json
 
-DEFAULT_ALPINE_VERSION = '3.20'
-ALPINE_VERSIONS = ['3.17', '3.18', '3.19', '3.20']
+DEFAULT_ALPINE_VERSION = '3.21'
+ALPINE_VERSIONS = ['3.18', '3.19', '3.20']
 
 def generate_tags(key, version):
     update = version.split('.')[1] if (key == '8') else version.split('.')[2]
