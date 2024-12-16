@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 ARG version=23.0.1.8-1
 # In addition to installing the Amazon corretto, we also install
@@ -15,15 +15,16 @@ ARG version=23.0.1.8-1
 RUN set -ux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        curl ca-certificates gnupg software-properties-common fontconfig \
-    && curl -fL https://apt.corretto.aws/corretto.key | apt-key add - \
-    && add-apt-repository 'deb https://apt.corretto.aws stable main' \
-    && mkdir -p /usr/share/man/man1 \
+        curl ca-certificates fontconfig \
+    && curl -fLo /etc/apt/keyrings/corretto.asc https://apt.corretto.aws/corretto.key \
+    && echo "deb [signed-by=/etc/apt/keyrings/corretto.asc] https://apt.corretto.aws stable main" > /etc/apt/sources.list.d/corretto.list \
     && apt-get update \
     && apt-get install -y java-23-amazon-corretto-jdk=1:$version binutils \
     && jlink --add-modules "$(java --list-modules | sed -e 's/@[0-9].*$/,/' | tr -d \\n)" --no-man-pages --no-header-files --strip-debug --output /opt/corretto-slim \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-            curl gnupg software-properties-common binutils java-23-amazon-corretto-jdk=1:$version \
+            curl binutils java-23-amazon-corretto-jdk=1:$version \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /usr/lib/jvm \
     && mv /opt/corretto-slim /usr/lib/jvm/java-23-amazon-corretto \
     && jdk_tools="java keytool rmid rmiregistry javac jaotc jlink jmod jhsdb jar jarsigner javadoc javap jcmd jconsole jdb jdeps jdeprscan jimage jinfo jmap jps jrunscript jshell jstack jstat jstatd serialver" \
