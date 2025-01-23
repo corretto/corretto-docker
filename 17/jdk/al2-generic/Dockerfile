@@ -1,6 +1,6 @@
 FROM amazonlinux:2
 
-ARG version=17.0.13.11-1
+ARG version=17.0.14.7-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management
