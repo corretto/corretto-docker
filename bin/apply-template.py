@@ -25,7 +25,7 @@ def process_template_files(major_version, version, platform):
         with open(f"{major_version}/jdk/{platform}/{os_version}/Dockerfile", 'w') as output:
             output.write(template.render(**input_parameter))
 
-    
+
         if major_version == '8':
             os.makedirs(f"{major_version}/jre/{platform}/{os_version}/", exist_ok=True)
             with open(f"{major_version}/jre/{platform}/{os_version}/Dockerfile", 'w') as output:
@@ -34,9 +34,13 @@ def process_template_files(major_version, version, platform):
 def main():
     with open('versions.json','r') as version_file:
         versions = json.load(version_file)
-    
+
     for key in versions:
-        process_template_files(key, versions[key], 'alpine')
+        if "ALPINE" in versions[key]:
+            process_template_files(key, versions[key]["ALPINE"], 'alpine')
+        else:
+            process_template_files(key, versions[key], 'alpine')
+
 
 if __name__ == "__main__":
     main()

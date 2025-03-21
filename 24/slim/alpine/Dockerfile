@@ -2,7 +2,7 @@ FROM alpine:3.17
 
 ARG version=24.0.0.36.2
 
-# Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently. 
+# Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently.
 # The Corretto team will update this file but you may see a few days' delay.
 #
 # Slim:
@@ -22,7 +22,7 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     mv /opt/corretto-slim /usr/lib/jvm/java-24-amazon-corretto && \
     ln -sfn /usr/lib/jvm/java-24-amazon-corretto /usr/lib/jvm/default-jvm
 
-    
+
 
 ENV LANG=C.UTF-8
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm
