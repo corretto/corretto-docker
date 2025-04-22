@@ -137,12 +137,6 @@ if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
     update_musl_linux ${CORRETTO_21_ALPINE} 21
 fi
 
-if [ ! -z "${CORRETTO_23_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_23_GENERIC_LINUX} 23
-    update_amazon_linux ${CORRETTO_23_AMAZON_LINUX} 23
-    update_musl_linux ${CORRETTO_23_ALPINE} 23
-fi
-
 if [ ! -z "${CORRETTO_24_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_24_GENERIC_LINUX} 24
     update_amazon_linux ${CORRETTO_24_AMAZON_LINUX} 24
