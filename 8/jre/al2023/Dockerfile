@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=1.8.0_452.b09-1
+ARG version=1.8.0_452.b09-2
 
 RUN set -eux \
     && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
