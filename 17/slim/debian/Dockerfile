@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ARG version=17.0.16.8-1
 # In addition to installing the Amazon corretto, we also install
