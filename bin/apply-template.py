@@ -13,7 +13,7 @@ def process_template_files(major_version, version, platform):
     input_parameter['MAJOR_VERSION'] = major_version
     if platform == 'alpine':
         # Update .github/workflows/verify-images.yml as well when alpine versions changes
-        os_versions = ['3.19', '3.20', '3.21']
+        os_versions = ['3.19', '3.20', '3.21', '3.22']
     try:
         shutil.rmtree(f"{major_version}/jdk/{platform}")
         shutil.rmtree(f"{major_version}/jre/{platform}")
