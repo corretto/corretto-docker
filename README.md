@@ -48,7 +48,10 @@ AWS security directly.
 
 If a security scanner reports that an amazoncorretto image includes a CVE, the first recommended action is to pull an updated version of this image with `docker pull amazoncorretto:<tag>`.
 
-If no updated image is available, run the appropriate command to update packages for the platform, ie. run "apk -U upgrade" for Alpine or "yum update -y --security" for AmazonLinux in your Dockerfiles or systems to resolve the issue immediately.
+If no updated image is available, run the appropriate command to update packages for the platform in your Dockerfiles or running systems to resolve the issue immediately.
+ * AmazonLinux 2 and many other RPM based distrobutions: `yum update -y --security`
+ * AmazonLinux 2023 `dnf update -y --security --releasever=latest`
+ * AlpineLinux: `apk -U upgrade`
 
 If no updated package is available, please treat this as a potential security issue and follow [these instructions](https://aws.amazon.com/security/vulnerability-reporting/) or email AWS security directly at [aws-security@amazon.com](mailto:aws-security@amazon.com).
 
