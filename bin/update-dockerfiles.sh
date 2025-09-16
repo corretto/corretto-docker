@@ -143,6 +143,12 @@ if [ ! -z "${CORRETTO_24_GENERIC_LINUX}" ]; then
     update_musl_linux ${CORRETTO_24_ALPINE} 24
 fi
 
+if [ ! -z "${CORRETTO_25_GENERIC_LINUX}" ]; then
+    update_generic_linux ${CORRETTO_25_GENERIC_LINUX} 25
+    update_amazon_linux ${CORRETTO_25_AMAZON_LINUX} 25
+    update_musl_linux ${CORRETTO_25_ALPINE} 25
+fi
+
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     jdk_version=$(echo ${CORRETTO_8_GENERIC_LINUX} | cut -d'.' -f2)
     jdk_build=$(echo ${CORRETTO_8_GENERIC_LINUX} | cut -d'.' -f3)
@@ -172,3 +178,4 @@ verify_update 11 "${CORRETTO_11_GENERIC_LINUX}|${CORRETTO_11_AMAZON_LINUX}|${COR
 verify_update 17 "${CORRETTO_17_GENERIC_LINUX}|${CORRETTO_17_AMAZON_LINUX}|${CORRETTO_17_ALPINE}"
 verify_update 21 "${CORRETTO_21_GENERIC_LINUX}|${CORRETTO_21_AMAZON_LINUX}|${CORRETTO_21_ALPINE}"
 verify_update 24 "${CORRETTO_24_GENERIC_LINUX}|${CORRETTO_24_AMAZON_LINUX}|${CORRETTO_24_ALPINE}"
+verify_update 25 "${CORRETTO_25_GENERIC_LINUX}|${CORRETTO_25_AMAZON_LINUX}|${CORRETTO_25_ALPINE}"
