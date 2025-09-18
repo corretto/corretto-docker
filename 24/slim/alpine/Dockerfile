@@ -1,4 +1,4 @@
-FROM alpine:3.19
+FROM alpine:3.22
 
 ARG version=24.0.2.12.1
 
@@ -21,7 +21,6 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     mkdir -p /usr/lib/jvm/ && \
     mv /opt/corretto-slim /usr/lib/jvm/java-24-amazon-corretto && \
     ln -sfn /usr/lib/jvm/java-24-amazon-corretto /usr/lib/jvm/default-jvm
-
 
 
 ENV LANG=C.UTF-8
