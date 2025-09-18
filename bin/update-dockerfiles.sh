@@ -27,16 +27,6 @@ verify_update() {
     popd
 }
 
-update_musl_linux() {
-    CORRETTO_VERSION=$1
-    MAJOR_RELEASE=$2
-
-    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
-        ${SED} "s/ARG version=.*/ARG version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
-    fi
-}
-
-
 update_generic_linux() {
     CORRETTO_VERSION=$1
     MAJOR_RELEASE=$2
@@ -122,31 +112,26 @@ done
 if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
     update_amazon_linux ${CORRETTO_11_AMAZON_LINUX} 11
-    update_musl_linux ${CORRETTO_11_ALPINE} 11
 fi
 
 if [ ! -z "${CORRETTO_17_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_17_GENERIC_LINUX} 17
     update_amazon_linux ${CORRETTO_17_AMAZON_LINUX} 17
-    update_musl_linux ${CORRETTO_17_ALPINE} 17
 fi
 
 if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_21_GENERIC_LINUX} 21
     update_amazon_linux ${CORRETTO_21_AMAZON_LINUX} 21
-    update_musl_linux ${CORRETTO_21_ALPINE} 21
 fi
 
 if [ ! -z "${CORRETTO_24_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_24_GENERIC_LINUX} 24
     update_amazon_linux ${CORRETTO_24_AMAZON_LINUX} 24
-    update_musl_linux ${CORRETTO_24_ALPINE} 24
 fi
 
 if [ ! -z "${CORRETTO_25_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_25_GENERIC_LINUX} 25
     update_amazon_linux ${CORRETTO_25_AMAZON_LINUX} 25
-    update_musl_linux ${CORRETTO_25_ALPINE} 25
 fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
