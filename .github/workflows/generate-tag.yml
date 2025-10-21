@@ -6,8 +6,7 @@ on:
       - main
 
 permissions:
-  contents: read
-  commit-comments: write
+  contents: write
 
 jobs:
   verify-repository-content:
