@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=11.0.28.6-1
+ARG version=11.0.29.7-1
 RUN set -eux \
     && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023 \
     && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
