@@ -124,11 +124,6 @@ if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
     update_amazon_linux ${CORRETTO_21_AMAZON_LINUX} 21
 fi
 
-if [ ! -z "${CORRETTO_24_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_24_GENERIC_LINUX} 24
-    update_amazon_linux ${CORRETTO_24_AMAZON_LINUX} 24
-fi
-
 if [ ! -z "${CORRETTO_25_GENERIC_LINUX}" ]; then
     update_generic_linux ${CORRETTO_25_GENERIC_LINUX} 25
     update_amazon_linux ${CORRETTO_25_AMAZON_LINUX} 25
@@ -162,5 +157,4 @@ verify_update 8 ${jdk_version}
 verify_update 11 "${CORRETTO_11_GENERIC_LINUX}|${CORRETTO_11_AMAZON_LINUX}|${CORRETTO_11_ALPINE}"
 verify_update 17 "${CORRETTO_17_GENERIC_LINUX}|${CORRETTO_17_AMAZON_LINUX}|${CORRETTO_17_ALPINE}"
 verify_update 21 "${CORRETTO_21_GENERIC_LINUX}|${CORRETTO_21_AMAZON_LINUX}|${CORRETTO_21_ALPINE}"
-verify_update 24 "${CORRETTO_24_GENERIC_LINUX}|${CORRETTO_24_AMAZON_LINUX}|${CORRETTO_24_ALPINE}"
 verify_update 25 "${CORRETTO_25_GENERIC_LINUX}|${CORRETTO_25_AMAZON_LINUX}|${CORRETTO_25_ALPINE}"
