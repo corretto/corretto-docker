@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  commit-comments: write
+
 jobs:
   verify-repository-content:
     name: Verify repository content
