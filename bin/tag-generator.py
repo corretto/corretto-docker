@@ -39,6 +39,7 @@ def generate_tags(key, version):
     if int(key) >= 22:
         al2023_tags.append(f"{key}")
         al2023_tags.append(f"{key}-jdk")
+        al2023_tags.append(f"{amazon_expanded_version}")
         al2023_headless_tags.append(f"{key}-headless")
         al2023_headful_tags.append(f"{key}-headful")
 
