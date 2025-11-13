@@ -2,6 +2,9 @@ name: Verify Docker Images
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   verify-corretto:
     name: Verify Corretto JDK Images
