@@ -154,16 +154,11 @@ for version in ${VERSIONS}; do
     verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}"
 done
 
-NEW_BRANCH=$RANDOM
-git checkout -b "${NEW_BRANCH}"
-git commit -am "Update for release $*"
-git push --set-upstream origin "${NEW_BRANCH}"
-
 if [[ -n "${WARNING_MSG}" ]]; then
     set +x
-    echo "########################################"
+    echo "################################################################################"
     echo "WARNING: version.json WAS NOT AUTOMATICALLY UPDATED!!"
     echo "         PLEASE MANUALLY VERIFY/UPDATE IT FOR CORRECTNESS"
-    echo "########################################"
+    echo "################################################################################"
     set -x
 fi
