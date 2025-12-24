@@ -1,14 +1,15 @@
 #!/bin/bash
-set -xe
+################################################################################
+# Usage: ./bin/update-dockerfiles.sh <spaced version strings (optional)>
+# Ex: ./bin/update-dockerfiles.sh 8.382.05.1 11.0.20.8.1 17.0.8.7.1 21.0.2.9.1
+#
+# Note: if args are passed in, the script will auto update versions.json
+#       otherwise, versions.json isn't changed and used as source of truth
+################################################################################
+set -xeou pipefail
+
 SED="sed -i"
-
 sed --version 2>/dev/null || SED="sed -i.bkp"
-
-usage() {
-    echo "usage: update-dockerfiles.sh [--help]"
-    echo ""
-    echo "Update the dockerfiles to use the version from versions.json"
-}
 
 verify_update() {
     MAJOR_RELEASE=$1
@@ -78,19 +79,23 @@ update_amazon_linux() {
     fi
 }
 
-while [ "$1" != "" ]; do
-    case $1 in
-        --help )
-            usage
-            exit
-            ;;
-        * )
-            usage
-            exit 1
-
-    esac
-    shift
+WARNING_MSG=""
+cp versions.json tmp.json
+for version_input in "$@"; do
+    major_version="${version_input%%.*}"
+    # if the entry isn't a simple string, skip the automatic version.json update
+    if [[ $(jq -r ".\"${major_version}\"|type" versions.json) != "string" ]]; then
+        WARNING_MSG="true"
+        break
+    fi
+    jq -r ".\"${major_version}\" = \"${version_input}\"" tmp.json > tmp-new.json
+    mv tmp-new.json tmp.json
 done
+if [[ -z "${WARNING_MSG}" ]]; then
+    mv tmp.json versions.json
+else
+    rm tmp.json
+fi
 
 VERSIONS=$(jq -r 'keys |@sh' versions.json|tr -d \')
 PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX")
@@ -106,28 +111,13 @@ for version in ${VERSIONS}; do
             eval CORRETTO_${version}_${platform}="$(cat versions.json |jq -r ".[\"${version}\"][\"${platform}\"]")"
         done
     fi
+    if [[ "${version}" != "8" ]]; then
+        generic_var="CORRETTO_${version}_GENERIC_LINUX"
+        al_var="CORRETTO_${version}_AMAZON_LINUX"
+        update_generic_linux "${!generic_var}" "${version}"
+        update_amazon_linux "${!al_var}" "${version}"
+    fi
 done
-
-
-if [ ! -z "${CORRETTO_11_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_11_GENERIC_LINUX} 11
-    update_amazon_linux ${CORRETTO_11_AMAZON_LINUX} 11
-fi
-
-if [ ! -z "${CORRETTO_17_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_17_GENERIC_LINUX} 17
-    update_amazon_linux ${CORRETTO_17_AMAZON_LINUX} 17
-fi
-
-if [ ! -z "${CORRETTO_21_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_21_GENERIC_LINUX} 21
-    update_amazon_linux ${CORRETTO_21_AMAZON_LINUX} 21
-fi
-
-if [ ! -z "${CORRETTO_25_GENERIC_LINUX}" ]; then
-    update_generic_linux ${CORRETTO_25_GENERIC_LINUX} 25
-    update_amazon_linux ${CORRETTO_25_AMAZON_LINUX} 25
-fi
 
 if [ ! -z "${CORRETTO_8_GENERIC_LINUX}" ]; then
     jdk_version=$(echo ${CORRETTO_8_GENERIC_LINUX} | cut -d'.' -f2)
@@ -154,7 +144,26 @@ python3 bin/apply-template.py
 
 # 8 is special and doesn't have a consistent version string, so we just use the update version.
 verify_update 8 ${jdk_version}
-verify_update 11 "${CORRETTO_11_GENERIC_LINUX}|${CORRETTO_11_AMAZON_LINUX}|${CORRETTO_11_ALPINE}"
-verify_update 17 "${CORRETTO_17_GENERIC_LINUX}|${CORRETTO_17_AMAZON_LINUX}|${CORRETTO_17_ALPINE}"
-verify_update 21 "${CORRETTO_21_GENERIC_LINUX}|${CORRETTO_21_AMAZON_LINUX}|${CORRETTO_21_ALPINE}"
-verify_update 25 "${CORRETTO_25_GENERIC_LINUX}|${CORRETTO_25_AMAZON_LINUX}|${CORRETTO_25_ALPINE}"
+for version in ${VERSIONS}; do
+    if [[ "${version}" == "8" ]]; then
+        continue
+    fi
+    generic_var="CORRETTO_${version}_GENERIC_LINUX"
+    al_var="CORRETTO_${version}_AMAZON_LINUX"
+    alpine_var="CORRETTO_${version}_ALPINE"
+    verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}"
+done
+
+NEW_BRANCH=$RANDOM
+git checkout -b "${NEW_BRANCH}"
+git commit -am "Update for release $*"
+git push --set-upstream origin "${NEW_BRANCH}"
+
+if [[ -n "${WARNING_MSG}" ]]; then
+    set +x
+    echo "########################################"
+    echo "WARNING: version.json WAS NOT AUTOMATICALLY UPDATED!!"
+    echo "         PLEASE MANUALLY VERIFY/UPDATE IT FOR CORRECTNESS"
+    echo "########################################"
+    set -x
+fi
