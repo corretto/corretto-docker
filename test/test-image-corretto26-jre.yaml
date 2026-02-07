@@ -1,0 +1,17 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  envVars:
+    - key: LANG
+      value: C.UTF-8
+
+commandTests:
+  - name: "java command is registered using alternatives."
+    command: "java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-26.*"]
+
+  - name: "JAVA_HOME points to the correct directory."
+    command: "$JAVA_HOME/bin/java"
+    args: ["-version"]
+    expectedError: ["OpenJDK Runtime Environment Corretto-26.*"]
