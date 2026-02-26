@@ -64,16 +64,16 @@ Security scanners may use heuristics or version checks of packages compared to a
 ## Types of images provided
 
 **amazoncorretto:<version>**
-The default image based on Amazon Linux 2, using the Corretto generic Linux RPM packages. The Corretto packages installed support a wide range of Linux versions, and not all GUI dependencies are installed. The Corretto generic linux packages use a slightly different version scheme than native packages, which may not match exact versions posted in ALAS bulletins. However, both generic linux and native Amazon Linux packages will contain the same code.
+The default image based on Amazon Linux 2, using the Corretto generic Linux RPM packages. The Corretto packages installed support a wide range of Linux versions, and not all GUI dependencies are installed. The Corretto generic linux packages use a slightly different version scheme than native packages, which may not match exact versions posted in ALAS bulletins. However, both generic linux and native Amazon Linux packages will contain the same code. **Notice:** in this image, the Corretto JDK comes with its own, bundled version of certificates under `lib/security/cacerts`.
 
 **amazoncorretto:<version>-alpine**
 Based on [Alpine Linux](https://www.alpinelinux.org/) that uses [musl libc](https://musl.libc.org/), with a focus on smaller image sizes. Images are available for each supported Alpine version. When new versions of Alpine come out, a pre-built image is typically provided on the next Corretto security release after the base image is available.
 
 **amazoncorretto:<version>-al2-native**
-Based on Amazon Linux 2 using the Corretto RPMs specifically built for the platform using the platform’s toolchain. These will include all dependencies, and the version of the Corretto packages will match ALAS bulletins.
+Based on Amazon Linux 2 using the Corretto RPMs specifically built for the platform using the platform’s toolchain. These will include all dependencies, and the version of the Corretto packages will match ALAS bulletins. **Notice:** in this image, the Corretto JDK uses the default platform certificates and `lib/security/cacerts` is just a simlink to `/etc/pki/java/cacerts`.
 
 **amazoncorretto:<version>-al2023**
-Based on Amazon Linux 2023 using the Corretto RPMs specifically built for the platform using the platform’s toolchain. These will include all dependencies and the version of the Corretto packages will match ALAS bulletins.
+Based on Amazon Linux 2023 using the Corretto RPMs specifically built for the platform using the platform’s toolchain. These will include all dependencies and the version of the Corretto packages will match ALAS bulletins. **Notice:** in this image, the Corretto JDK uses the default platform certificates and `lib/security/cacerts` is just a simlink to `/etc/pki/java/cacerts`.
 
 **amazoncorretto:<version>-debian**
 The dockerfiles are provided as examples only. Corretto is supported on `apt`/`deb` based distributions, but does not provide pre-built images.
