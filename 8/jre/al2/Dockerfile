@@ -4,12 +4,13 @@ ARG version=1.8.0_482.b08-1
 
 
 RUN set -eux \
+    && ARCH="$(rpm --query --queryformat='%{ARCH}' rpm)" \
     && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
     && rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2 \
     && echo "localpkg_gpgcheck=1" >> /etc/yum.conf \
     && CORRETO_TEMP=$(mktemp -d) \
     && pushd ${CORRETO_TEMP} \
-    && RPM_LIST=("java-1.8.0-amazon-corretto-$version.amzn2.$(uname -m).rpm") \
+    && RPM_LIST=("java-1.8.0-amazon-corretto-$version.amzn2.${ARCH}.rpm") \
     && for rpm in ${RPM_LIST[@]}; do \
     curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
     && echo $(rpm -K "${CORRETO_TEMP}/${rpm}") \
@@ -18,7 +19,7 @@ RUN set -eux \
     && yum install -y $(yum deplist ${CORRETO_TEMP}/*.rpm |grep provider | grep -v log4j-cve | tr -s ' ' |cut -d ' ' -f 3 ) \
     && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
     && popd \
-    && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.$(uname -m)/lib/src.zip \
+    && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.${ARCH}/lib/src.zip \
     && rm -rf ${CORRETO_TEMP} \
     && yum clean all \
     && rm -rf /var/cache/yum \
