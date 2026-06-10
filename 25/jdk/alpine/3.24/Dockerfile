@@ -1,6 +1,6 @@
-FROM alpine:3.20
+FROM alpine:3.24
 
-ARG version=26.0.1.8.1
+ARG version=25.0.3.9.1
 
 # Please note that the THIRD-PARTY-LICENSE could be out of date if the base image has been updated recently.
 # The Corretto team will update this file but you may see a few days' delay.
@@ -12,8 +12,8 @@ RUN wget -O /THIRD-PARTY-LICENSES-20200824.tar.gz https://corretto.aws/downloads
     SHA_SUM="6cfdf08be09f32ca298e2d5bd4a359ee2b275765c09b56d514624bf831eafb91" && \
     echo "${SHA_SUM}  /etc/apk/keys/amazoncorretto.rsa.pub" | sha256sum -c - && \
     echo "https://apk.corretto.aws" >> /etc/apk/repositories && \
-    apk add --no-cache amazon-corretto-26=$version-r0 && \
-    rm -rf /usr/lib/jvm/java-26-amazon-corretto/lib/src.zip
+    apk add --no-cache amazon-corretto-25=$version-r0 && \
+    rm -rf /usr/lib/jvm/java-25-amazon-corretto/lib/src.zip
 
 
 ENV LANG=C.UTF-8
