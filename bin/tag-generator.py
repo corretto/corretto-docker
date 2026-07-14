@@ -26,20 +26,22 @@ def generate_tags(key, version):
     # These only apply for Corretto8 which does not have the same modulare packages as 11+
     al2023_8_tags = [f"{key}-al2023-jre",  f"{amazon_expanded_version}-al2023-jre"]
 
+    # AL2 reached end of life, but AL2 based images remain available for
+    # Corretto <= 21 as a fallback under the -al2* tags.
     if int(key) <= 21:
-        al2_tags = [f"{key}", f"{generic_expanded_version}", f"{generic_expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic", f"{generic_expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
-        if key == '8':
-            al2_tags.append('latest')
+        al2_tags = [f"{key}-al2", f"{generic_expanded_version}-al2", f"{key}-al2-full", f"{key}-al2-jdk", f"{key}-al2-generic", f"{generic_expanded_version}-al2-generic", f"{key}-al2-generic-jdk"]
         print("Tags: " + ", ".join(al2_tags) + "")
         print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/jdk/al2-generic\n")
 
-    # Starting with Corretto 22 AL2 based images are not longer vended and AL2023 will be the
-    # default base OS until the next AL version is GA.
-    if int(key) >= 22:
-        al2023_tags.append(f"{key}")
-        al2023_tags.append(f"{key}-jdk")
-        al2023_tags.append(f"{amazon_expanded_version}")
+    # AL2023 is the default base OS for all versions until the next AL version is GA.
+    al2023_tags.append(f"{key}")
+    al2023_tags.append(f"{key}-jdk")
+    al2023_tags.append(f"{amazon_expanded_version}")
+    if key == '8':
+        al2023_tags.append('latest')
+        al2023_8_tags.append(f"{key}-jre")
+    else:
         al2023_headless_tags.append(f"{key}-headless")
         al2023_headful_tags.append(f"{key}-headful")
 
