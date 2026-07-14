@@ -49,7 +49,7 @@ def generate_tags(key, version):
     if key == '8':
         print("Tags: " + ", ".join(al2023_8_tags))
         print("Architectures: amd64, arm64v8")
-        print(f"Directory: {key}/jdk/al2023\n")
+        print(f"Directory: {key}/jre/al2023\n")
     else:
         print("Tags: " + ", ".join(al2023_headless_tags))
         print("Architectures: amd64, arm64v8")
