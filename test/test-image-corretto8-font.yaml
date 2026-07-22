@@ -1,0 +1,9 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+  - name: "Swing UIManager can initialize fonts."
+    command: "/bin/sh"
+    args:
+      - "-c"
+      - >-
+        echo 'try { print(javax.swing.UIManager.getFont("Label.font").getFamily()); } catch (e) { print(e); java.lang.System.exit(1); }' | jjs
