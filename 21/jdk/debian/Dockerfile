@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-ARG version=21.0.11.10-1
+ARG version=21.0.12.8-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management
