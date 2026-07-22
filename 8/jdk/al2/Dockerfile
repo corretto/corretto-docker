@@ -16,6 +16,7 @@ RUN set -eux \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: rsa sha1 (md5) pgp md5 OK" || exit 1 \
     && yum install -y $(yum deplist "${CORRETO_TEMP}/${rpm}" |grep provider | grep -v log4j-cve | tr -s ' ' |cut -d ' ' -f 3 ); \
     done \
+    && yum install -y fontconfig \
     && rpm -i --nodeps ${CORRETO_TEMP}/*.rpm \
     && popd \
     && (find /usr/lib/jvm/java-1.8.0-amazon-corretto.${ARCH} -name "*src.zip" -delete || true) \
