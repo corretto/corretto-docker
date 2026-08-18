@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=1.8.0_502.b07-1
+ARG version=1.8.0_504.b01-1
 
 RUN set -eux \
     && ARCH="$(rpm --query --queryformat='%{ARCH}' rpm)" \
