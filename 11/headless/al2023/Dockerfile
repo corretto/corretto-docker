@@ -1,6 +1,6 @@
 FROM amazonlinux:2023
 
-ARG version=11.0.32.9-1
+ARG version=11.0.32.10-1
 RUN set -eux \
     && ARCH="$(rpm --query --queryformat='%{ARCH}' rpm)" \
     && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2023 \
