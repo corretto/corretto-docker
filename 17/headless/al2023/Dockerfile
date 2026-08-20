@@ -14,7 +14,7 @@ RUN set -eux \
     curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
     done \
-    && dnf install -y --setopt=install_weak_deps=False ${CORRETO_TEMP}/*.rpm \
+    && dnf install -y ${CORRETO_TEMP}/*.rpm \
     && popd \
     && rm -rf /usr/lib/jvm/java-17-amazon-corretto.${ARCH}/lib/src.zip \
     && rm -rf ${CORRETO_TEMP} \
