@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bullseye-slim
 
 ARG version=27.0.0.35-1
 # In addition to installing the Amazon corretto, we also install
