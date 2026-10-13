@@ -8,6 +8,7 @@ def generate_tags(key, version):
         generic_update = version.split('.')[1] if (key == '8') else version.split('.')[2]
         generic_expanded_version = f"{key}u{generic_update}" if (key == '8') else f"{key}.0.{generic_update}"
         amazon_expanded_version = generic_expanded_version
+        amazon_2023_expanded_version = generic_expanded_version
         alpine_expanded_version = generic_expanded_version
     else:
         generic_corretto_version = version["GENERIC_LINUX"].split('.')[1] if (key == '8') else version["GENERIC_LINUX"].split('.')[2]
@@ -16,15 +17,20 @@ def generate_tags(key, version):
         amazon_corretto_version = version["AMAZON_LINUX"].split('.')[1] if (key == '8') else version["AMAZON_LINUX"].split('.')[2]
         amazon_expanded_version = f"{key}u{amazon_corretto_version}" if (key == '8') else f"{key}.0.{amazon_corretto_version}"
 
+        # AL2023 tags use the AMAZON_LINUX_2023 build when present, otherwise fall back to AMAZON_LINUX (al2).
+        amazon_2023_version = version["AMAZON_LINUX_2023"] if "AMAZON_LINUX_2023" in version else version["AMAZON_LINUX"]
+        amazon_2023_corretto_version = amazon_2023_version.split('.')[1] if (key == '8') else amazon_2023_version.split('.')[2]
+        amazon_2023_expanded_version = f"{key}u{amazon_2023_corretto_version}" if (key == '8') else f"{key}.0.{amazon_2023_corretto_version}"
+
         alpine_corretto_version = version["ALPINE"].split('.')[1] if (key == '8') else version["ALPINE"].split('.')[2]
         alpine_expanded_version = f"{key}u{alpine_corretto_version}" if (key == '8') else f"{key}.0.{alpine_corretto_version}"
 
 
-    al2023_tags = [f"{key}-al2023",  f"{amazon_expanded_version}-al2023" ,f"{key}-al2023-jdk"]
-    al2023_headless_tags = [f"{key}-al2023-headless",  f"{amazon_expanded_version}-al2023-headless"]
-    al2023_headful_tags = [f"{key}-al2023-headful",  f"{amazon_expanded_version}-al2023-headful"]
+    al2023_tags = [f"{key}-al2023",  f"{amazon_2023_expanded_version}-al2023" ,f"{key}-al2023-jdk"]
+    al2023_headless_tags = [f"{key}-al2023-headless",  f"{amazon_2023_expanded_version}-al2023-headless"]
+    al2023_headful_tags = [f"{key}-al2023-headful",  f"{amazon_2023_expanded_version}-al2023-headful"]
     # These only apply for Corretto8 which does not have the same modulare packages as 11+
-    al2023_8_tags = [f"{key}-al2023-jre",  f"{amazon_expanded_version}-al2023-jre"]
+    al2023_8_tags = [f"{key}-al2023-jre",  f"{amazon_2023_expanded_version}-al2023-jre"]
 
     # AL2 reached end of life, but AL2 based images remain available for
     # Corretto <= 21 as a fallback under the -al2* tags.
@@ -37,7 +43,7 @@ def generate_tags(key, version):
     # AL2023 is the default base OS for all versions until the next AL version is GA.
     al2023_tags.append(f"{key}")
     al2023_tags.append(f"{key}-jdk")
-    al2023_tags.append(f"{amazon_expanded_version}")
+    al2023_tags.append(f"{amazon_2023_expanded_version}")
     if key == '8':
         al2023_tags.append('latest')
         al2023_8_tags.append(f"{key}-jre")

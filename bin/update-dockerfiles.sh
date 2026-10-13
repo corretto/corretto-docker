@@ -47,7 +47,7 @@ update_generic_linux() {
     fi
 }
 
-update_amazon_linux() {
+update_amazon_linux_2023() {
     CORRETTO_VERSION=$1
     MAJOR_RELEASE=$2
 
@@ -63,6 +63,15 @@ update_amazon_linux() {
     if [[ -f ./${MAJOR_RELEASE}/headless/al2023/Dockerfile ]]; then
         ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headless/al2023/Dockerfile
     fi
+}
+
+update_amazon_linux() {
+    CORRETTO_VERSION=$1
+    MAJOR_RELEASE=$2
+
+    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
+    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
+    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
 
     ADDITIONAL_IMAGES="jdk jre headful headless"
     for IMAGE_TYPE in ${ADDITIONAL_IMAGES}; do
@@ -98,7 +107,7 @@ else
 fi
 
 VERSIONS=$(jq -r 'keys |@sh' versions.json|tr -d \')
-PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX")
+PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX" "AMAZON_LINUX_2023")
 for version in ${VERSIONS}; do
     # If the version entry is just a string then populate all of the PLATFORMS with that value
     if [[ "$(cat versions.json |jq -r ".[\"${version}\"]|type")" == "string" ]]; then
@@ -111,11 +120,20 @@ for version in ${VERSIONS}; do
             eval CORRETTO_${version}_${platform}="$(cat versions.json |jq -r ".[\"${version}\"][\"${platform}\"]")"
         done
     fi
+    # AMAZON_LINUX_2023 defaults to the AMAZON_LINUX (al2) value when not explicitly set,
+    # so existing entries that omit the key keep the previous all-Amazon-Linux behavior.
+    al2023_fallback="CORRETTO_${version}_AMAZON_LINUX_2023"
+    al_fallback="CORRETTO_${version}_AMAZON_LINUX"
+    if [[ "${!al2023_fallback}" == "null" || -z "${!al2023_fallback}" ]]; then
+        eval CORRETTO_${version}_AMAZON_LINUX_2023="${!al_fallback}"
+    fi
     if [[ "${version}" != "8" ]]; then
         generic_var="CORRETTO_${version}_GENERIC_LINUX"
         al_var="CORRETTO_${version}_AMAZON_LINUX"
+        al2023_var="CORRETTO_${version}_AMAZON_LINUX_2023"
         update_generic_linux "${!generic_var}" "${version}"
         update_amazon_linux "${!al_var}" "${version}"
+        update_amazon_linux_2023 "${!al2023_var}" "${version}"
     fi
 done
 
@@ -134,6 +152,13 @@ if [ ! -z "${CORRETTO_8_AMAZON_LINUX}" ]; then
 
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2/Dockerfile
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jre/al2/Dockerfile
+fi
+
+if [ ! -z "${CORRETTO_8_AMAZON_LINUX_2023}" ]; then
+    jdk_version=$(echo ${CORRETTO_8_AMAZON_LINUX_2023} | cut -d'.' -f2)
+    jdk_build=$(echo ${CORRETTO_8_AMAZON_LINUX_2023} | cut -d'.' -f3)
+    corretto_version=$(echo ${CORRETTO_8_AMAZON_LINUX_2023} | cut -d'.' -f4)
+
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jre/al2023/Dockerfile
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2023/Dockerfile
 fi
@@ -151,7 +176,8 @@ for version in ${VERSIONS}; do
     generic_var="CORRETTO_${version}_GENERIC_LINUX"
     al_var="CORRETTO_${version}_AMAZON_LINUX"
     alpine_var="CORRETTO_${version}_ALPINE"
-    verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}"
+    al2023_var="CORRETTO_${version}_AMAZON_LINUX_2023"
+    verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}|${!al2023_var}"
 done
 
 if [[ -n "${WARNING_MSG}" ]]; then
