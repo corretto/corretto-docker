@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-ARG version=8.504.04-1
+ARG version=8.512.08-1
 # In addition to installing the Amazon corretto, we also install
 # fontconfig. The folks who manage the docker hub's
 # official image library have found that font management
