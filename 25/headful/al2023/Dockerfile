@@ -1,6 +1,7 @@
 FROM amazonlinux:2023
 
-ARG version=25.0.4.11-1
+ARG version=25.0.5.0.9-1
+ARG resource_version=25.0.5.0.9
 ARG package_version=1
 
 RUN set -eux \
@@ -11,7 +12,7 @@ RUN set -eux \
     && pushd ${CORRETO_TEMP} \
     && RPM_LIST=("java-25-amazon-corretto-headless-$version.amzn2023.${package_version}.${ARCH}.rpm" "java-25-amazon-corretto-$version.amzn2023.${package_version}.${ARCH}.rpm") \
     && for rpm in ${RPM_LIST[@]}; do \
-    curl --fail -O https://corretto.aws/downloads/resources/$(echo $version | tr '-' '.')/${rpm} \
+    curl --fail -O https://corretto.aws/downloads/resources/${resource_version}/${rpm} \
     && rpm -K "${CORRETO_TEMP}/${rpm}" | grep -F "${CORRETO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
     done \
     && dnf install -y ${CORRETO_TEMP}/*.rpm \
