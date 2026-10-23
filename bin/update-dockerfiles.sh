@@ -1,10 +1,12 @@
 #!/bin/bash
 ################################################################################
 # Usage: ./bin/update-dockerfiles.sh <spaced version strings (optional)>
-# Ex: ./bin/update-dockerfiles.sh 8.382.05.1 11.0.20.8.1 17.0.8.7.1 21.0.2.9.1
+# Ex: ./bin/update-dockerfiles.sh 8.512.08.1 11.0.33.0.9 17.0.21.0.10
 #
-# Note: if args are passed in, the script will auto update versions.json
+# Note: args update each release's canonical version for all platforms.
 #       otherwise, versions.json isn't changed and used as source of truth
+#       For platform-specific versions, edit versions.json and run without args.
+#       CORRETTO_PACKAGE_RELEASE defaults to 1 for the new version format.
 ################################################################################
 set -xeou pipefail
 
@@ -28,83 +30,89 @@ verify_update() {
     popd
 }
 
+native_package_version() {
+    local canonical=$1 major=$2 update first_new_update release
+    update=$(echo "${canonical}" | cut -d'.' -f3)
+    # First published updates using feature.interim.update.patch.build.
+    # Older releases, including 26, retain build.package-release.
+    case "${major}" in
+        11) first_new_update=33 ;;
+        17) first_new_update=21 ;;
+        21) first_new_update=13 ;;
+        25) first_new_update=5 ;;
+        27) first_new_update=1 ;;
+        26) printf '%s-%s\n' "${canonical%.*}" "${canonical##*.}"; return ;;
+        *) first_new_update=0 ;;
+    esac
+    if (( 10#${update} < first_new_update )); then
+        printf '%s-%s\n' "${canonical%.*}" "${canonical##*.}"
+    else
+        release=${CORRETTO_PACKAGE_RELEASE:-1}
+        [[ "${release}" =~ ^[0-9]+$ ]] || { echo "Invalid package release: ${release}" >&2; return 1; }
+        printf '%s-%s\n' "${canonical}" "${release}"
+    fi
+}
+
+update_native_dockerfile() {
+    local dockerfile=$1 canonical=$2 major=$3 package_pin
+    [[ -f "${dockerfile}" ]] || return 0
+    package_pin=$(native_package_version "${canonical}" "${major}")
+    python3 - "${dockerfile}" "${package_pin}" "${canonical}" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+path, package_pin, canonical = sys.argv[1:]
+path = Path(path)
+text = path.read_text()
+text, count = re.subn(r"^ARG version=.*$", lambda _: "ARG version=" + package_pin, text, flags=re.M)
+if count != 1:
+    raise ValueError(f"Expected one version argument in {path}")
+if "RPM_LIST=" in text and "corretto.aws/downloads/resources/" in text:
+    if re.search(r"^ARG resource_version=", text, re.M):
+        text = re.sub(r"^ARG resource_version=.*$", lambda _: "ARG resource_version=" + canonical, text, flags=re.M)
+    else:
+        text = text.replace("ARG version=" + package_pin, "ARG version=" + package_pin + "\nARG resource_version=" + canonical, 1)
+    text = text.replace("$(echo $version | tr '-' '.')", "${resource_version}")
+    text = re.sub(r"^\s*&& export (?:resouce_version|resource_version)=\$\{resource_version\} \\\n", "", text, flags=re.M)
+    text = text.replace("${resouce_version}", "${resource_version}")
+path.write_text(text)
+PY
+}
+
 update_generic_linux() {
-    CORRETTO_VERSION=$1
-    MAJOR_RELEASE=$2
-
-    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
-    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
-    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-    if [[ -f ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile ]]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2-generic/Dockerfile
-    fi
-
-    ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/debian/Dockerfile
-
-    if [ -d "./${MAJOR_RELEASE}/slim" ]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/debian/Dockerfile
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}.${corretto_version}/g" ./${MAJOR_RELEASE}/slim/alpine/Dockerfile
-    fi
+    local canonical=$1 major=$2
+    for dockerfile in "./${major}/jdk/al2-generic/Dockerfile" "./${major}/jdk/debian/Dockerfile" "./${major}/slim/debian/Dockerfile" "./${major}/slim/al2/Dockerfile"; do
+        update_native_dockerfile "${dockerfile}" "${canonical}" "${major}"
+    done
 }
 
 update_amazon_linux_2023() {
-    CORRETTO_VERSION=$1
-    MAJOR_RELEASE=$2
-
-    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
-    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
-    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-    if [[ -f ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile ]]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/jdk/al2023/Dockerfile
-    fi
-    if [[ -f ./${MAJOR_RELEASE}/headful/al2023/Dockerfile ]]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headful/al2023/Dockerfile
-    fi
-    if [[ -f ./${MAJOR_RELEASE}/headless/al2023/Dockerfile ]]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/headless/al2023/Dockerfile
-    fi
+    local canonical=$1 major=$2
+    for image_type in jdk headful headless; do
+        update_native_dockerfile "./${major}/${image_type}/al2023/Dockerfile" "${canonical}" "${major}"
+    done
 }
 
 update_amazon_linux() {
-    CORRETTO_VERSION=$1
-    MAJOR_RELEASE=$2
-
-    jdk_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f1-3)
-    jdk_build=$(echo ${CORRETTO_VERSION} | cut -d'.' -f4)
-    corretto_version=$(echo ${CORRETTO_VERSION} | cut -d'.' -f5)
-
-    ADDITIONAL_IMAGES="jdk jre headful headless"
-    for IMAGE_TYPE in ${ADDITIONAL_IMAGES}; do
-        echo "Checking $IMAGE_TYPE"
-        if [ -d ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2 ]; then
-            echo "Updating"
-
-            ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2/Dockerfile
-        fi
+    local canonical=$1 major=$2
+    for image_type in jdk jre headful headless; do
+        update_native_dockerfile "./${major}/${image_type}/al2/Dockerfile" "${canonical}" "${major}"
     done
-
-    if [[ -f ./${MAJOR_RELEASE}/slim/al2/Dockerfile ]]; then
-        ${SED} "s/ARG version=.*/ARG version=${jdk_version}.${jdk_build}-${corretto_version}/g" ./${MAJOR_RELEASE}/slim/al2/Dockerfile
-    fi
+    update_native_dockerfile "./${major}/slim/al2/Dockerfile" "${canonical}" "${major}"
 }
 
-WARNING_MSG=""
 cp versions.json tmp.json
 for version_input in "$@"; do
     major_version="${version_input%%.*}"
-    # if the entry isn't a simple string, skip the automatic version.json update
-    if [[ $(jq -r ".\"${major_version}\"|type" versions.json) != "string" ]]; then
-        WARNING_MSG="true"
-        break
-    fi
-    jq -r ".\"${major_version}\" = \"${version_input}\"" tmp.json > tmp-new.json
+    jq --arg major "${major_version}" --arg canonical "${version_input}" \
+       '.[$major] |= if type == "object" then
+          .GENERIC_LINUX = $canonical | .ALPINE = $canonical |
+          .AMAZON_LINUX = $canonical | .AMAZON_LINUX_2023 = $canonical
+        else $canonical end' tmp.json > tmp-new.json
     mv tmp-new.json tmp.json
 done
-if [[ -z "${WARNING_MSG}" ]]; then
-    mv tmp.json versions.json
-else
-    rm tmp.json
-fi
+mv tmp.json versions.json
 
 VERSIONS=$(jq -r 'keys |@sh' versions.json|tr -d \')
 PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX" "AMAZON_LINUX_2023")
@@ -179,12 +187,3 @@ for version in ${VERSIONS}; do
     al2023_var="CORRETTO_${version}_AMAZON_LINUX_2023"
     verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}|${!al2023_var}"
 done
-
-if [[ -n "${WARNING_MSG}" ]]; then
-    set +x
-    echo "################################################################################"
-    echo "WARNING: version.json WAS NOT AUTOMATICALLY UPDATED!!"
-    echo "         PLEASE MANUALLY VERIFY/UPDATE IT FOR CORRECTNESS"
-    echo "################################################################################"
-    set -x
-fi
