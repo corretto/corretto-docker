@@ -1,7 +1,7 @@
 FROM amazonlinux:2
 
-ARG version=17.0.21.0.10-1
-ARG resource_version=17.0.21.0.10
+ARG version=17.0.21.0.11-1
+ARG resource_version=17.0.21.0.11
 
 RUN set -eux \
     && ARCH="$(rpm --query --queryformat='%{ARCH}' rpm)" \
