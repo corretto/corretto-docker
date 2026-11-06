@@ -9,6 +9,7 @@ def generate_tags(key, version):
         generic_expanded_version = f"{key}u{generic_update}" if (key == '8') else f"{key}.0.{generic_update}"
         amazon_expanded_version = generic_expanded_version
         amazon_2023_expanded_version = generic_expanded_version
+        amazon_2027_expanded_version = generic_expanded_version
         alpine_expanded_version = generic_expanded_version
     else:
         generic_corretto_version = version["GENERIC_LINUX"].split('.')[1] if (key == '8') else version["GENERIC_LINUX"].split('.')[2]
@@ -22,6 +23,11 @@ def generate_tags(key, version):
         amazon_2023_corretto_version = amazon_2023_version.split('.')[1] if (key == '8') else amazon_2023_version.split('.')[2]
         amazon_2023_expanded_version = f"{key}u{amazon_2023_corretto_version}" if (key == '8') else f"{key}.0.{amazon_2023_corretto_version}"
 
+        # AL2027 tags use the AMAZON_LINUX_2027 build when present, otherwise fall back to the AL2023 build.
+        amazon_2027_version = version["AMAZON_LINUX_2027"] if "AMAZON_LINUX_2027" in version else amazon_2023_version
+        amazon_2027_corretto_version = amazon_2027_version.split('.')[1] if (key == '8') else amazon_2027_version.split('.')[2]
+        amazon_2027_expanded_version = f"{key}u{amazon_2027_corretto_version}" if (key == '8') else f"{key}.0.{amazon_2027_corretto_version}"
+
         alpine_corretto_version = version["ALPINE"].split('.')[1] if (key == '8') else version["ALPINE"].split('.')[2]
         alpine_expanded_version = f"{key}u{alpine_corretto_version}" if (key == '8') else f"{key}.0.{alpine_corretto_version}"
 
@@ -31,6 +37,11 @@ def generate_tags(key, version):
     al2023_headful_tags = [f"{key}-al2023-headful",  f"{amazon_2023_expanded_version}-al2023-headful"]
     # These only apply for Corretto8 which does not have the same modulare packages as 11+
     al2023_8_tags = [f"{key}-al2023-jre",  f"{amazon_2023_expanded_version}-al2023-jre"]
+
+    al2027_tags = [f"{key}-al2027", f"{amazon_2027_expanded_version}-al2027", f"{key}-al2027-jdk"]
+    al2027_headless_tags = [f"{key}-al2027-headless", f"{amazon_2027_expanded_version}-al2027-headless"]
+    al2027_headful_tags = [f"{key}-al2027-headful", f"{amazon_2027_expanded_version}-al2027-headful"]
+    al2027_8_tags = [f"{key}-al2027-jre", f"{amazon_2027_expanded_version}-al2027-jre"]
 
     # AL2 reached end of life, but AL2 based images remain available for
     # Corretto <= 21 as a fallback under the -al2* tags.
@@ -66,6 +77,22 @@ def generate_tags(key, version):
         print("Tags: " + ", ".join(al2023_headful_tags))
         print("Architectures: amd64, arm64v8")
         print(f"Directory: {key}/headful/al2023\n")
+
+    print("Tags: " + ", ".join(al2027_tags))
+    print("Architectures: amd64, arm64v8")
+    print(f"Directory: {key}/jdk/al2027\n")
+    if key == '8':
+        print("Tags: " + ", ".join(al2027_8_tags))
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/jre/al2027\n")
+    else:
+        print("Tags: " + ", ".join(al2027_headless_tags))
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/headless/al2027\n")
+
+        print("Tags: " + ", ".join(al2027_headful_tags))
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/headful/al2027\n")
 
     # For LTS versions with modular AmazonLinux 2 packages we want to tag those images
     native_package_modifier="al2-native-"
