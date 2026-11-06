@@ -1,0 +1,26 @@
+FROM amazonlinux:2027
+
+ARG version=1.8.0_512.b09-1
+
+RUN set -eux \
+    && ARCH="$(rpm --query --queryformat='%{ARCH}' rpm)" \
+    && export resouce_version=$(echo $version | tr '-' '.' | tr '_' '.'| tr -d "b" | awk -F. '{print $2"."$4"."$5"."$6}') \
+    && rpm --import file:///etc/pki/rpm-gpg/RPM-GPG-KEY-amazon-linux-2027 \
+    && echo "localpkg_gpgcheck=1" >> /etc/dnf/dnf.conf \
+    && CORRETTO_TEMP=$(mktemp -d) \
+    && pushd ${CORRETTO_TEMP} \
+    && RPM_LIST=("java-1.8.0-amazon-corretto-$version.amzn2027.${ARCH}.rpm") \
+    && for rpm in "${RPM_LIST[@]}"; do \
+    curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
+    && rpm -K "${CORRETTO_TEMP}/${rpm}" | grep -F "${CORRETTO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
+    done \
+    && dnf install -y ${CORRETTO_TEMP}/*.rpm \
+    && alternatives --install /usr/lib/jvm/java-1.8.0-amazon-corretto java-1.8.0-amazon-corretto /usr/lib/jvm/java-1.8.0-amazon-corretto.${ARCH} 100 \
+    && popd \
+    && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.${ARCH}/lib/src.zip \
+    && rm -rf ${CORRETTO_TEMP} \
+    && dnf clean all \
+    && sed -i '/localpkg_gpgcheck=1/d' /etc/dnf/dnf.conf
+
+ENV LANG=C.UTF-8
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto/jre
