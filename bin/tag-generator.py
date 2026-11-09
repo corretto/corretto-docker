@@ -129,6 +129,15 @@ def generate_tags(key, version):
             print("Architectures: amd64, arm64v8")
             print(f"Directory: {key}/jre/alpine/{alpine_version}\n")
 
+    if int(key) >= 17:
+        alpine_slim_tags = [
+            f"{key}-alpine-slim", f"{alpine_expanded_version}-alpine-slim",
+            f"{key}-alpine{DEFAULT_ALPINE_VERSION}-slim", f"{alpine_expanded_version}-alpine{DEFAULT_ALPINE_VERSION}-slim"
+        ]
+        print("Tags: " + ", ".join(alpine_slim_tags))
+        print("Architectures: amd64, arm64v8")
+        print(f"Directory: {key}/slim/alpine\n")
+
 
 def main():
     with open('versions.json','r') as version_file:
