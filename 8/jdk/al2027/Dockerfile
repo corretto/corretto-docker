@@ -15,7 +15,7 @@ RUN set -eux \
     curl --fail -O https://corretto.aws/downloads/resources/${resouce_version}/${rpm} \
     && rpm -K "${CORRETTO_TEMP}/${rpm}" | grep -F "${CORRETTO_TEMP}/${rpm}: digests signatures OK" || exit 1; \
     done \
-    && dnf install -y ${CORRETTO_TEMP}/*.rpm \
+    && dnf install -y fontconfig ${CORRETTO_TEMP}/*.rpm \
     && popd \
     && rm -rf /usr/lib/jvm/java-1.8.0-amazon-corretto.${ARCH}/lib/src.zip \
     && rm -rf ${CORRETTO_TEMP} \
