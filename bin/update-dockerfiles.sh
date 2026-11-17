@@ -62,6 +62,18 @@ update_amazon_linux_2023() {
     fi
 }
 
+update_amazon_linux_2027() {
+    CORRETTO_VERSION=$1
+    MAJOR_RELEASE=$2
+
+    version_release=${CORRETTO_VERSION}-${CORRETTO_PACKAGE_RELEASE:-1}
+    for IMAGE_TYPE in jdk headful headless; do
+        if [[ -f ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2027/Dockerfile ]]; then
+            ${SED} -e "s/ARG version=.*/ARG version=${version_release}/g" -e "s/ARG resource_version=.*/ARG resource_version=${CORRETTO_VERSION}/g" ./${MAJOR_RELEASE}/${IMAGE_TYPE}/al2027/Dockerfile
+        fi
+    done
+}
+
 update_amazon_linux() {
     CORRETTO_VERSION=$1
     MAJOR_RELEASE=$2
@@ -102,7 +114,7 @@ else
 fi
 
 VERSIONS=$(jq -r 'keys |@sh' versions.json|tr -d \')
-PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX" "AMAZON_LINUX_2023")
+PLATFORMS=("GENERIC_LINUX" "ALPINE" "AMAZON_LINUX" "AMAZON_LINUX_2023" "AMAZON_LINUX_2027")
 for version in ${VERSIONS}; do
     # If the version entry is just a string then populate all of the PLATFORMS with that value
     if [[ "$(cat versions.json |jq -r ".[\"${version}\"]|type")" == "string" ]]; then
@@ -122,13 +134,21 @@ for version in ${VERSIONS}; do
     if [[ "${!al2023_fallback}" == "null" || -z "${!al2023_fallback}" ]]; then
         eval CORRETTO_${version}_AMAZON_LINUX_2023="${!al_fallback}"
     fi
+    # AMAZON_LINUX_2027 defaults to the AMAZON_LINUX_2023 value when not explicitly set
+    # (matches the fallback used in bin/tag-generator.py).
+    al2027_fallback="CORRETTO_${version}_AMAZON_LINUX_2027"
+    if [[ "${!al2027_fallback}" == "null" || -z "${!al2027_fallback}" ]]; then
+        eval CORRETTO_${version}_AMAZON_LINUX_2027="${!al2023_fallback}"
+    fi
     if [[ "${version}" != "8" ]]; then
         generic_var="CORRETTO_${version}_GENERIC_LINUX"
         al_var="CORRETTO_${version}_AMAZON_LINUX"
         al2023_var="CORRETTO_${version}_AMAZON_LINUX_2023"
+        al2027_var="CORRETTO_${version}_AMAZON_LINUX_2027"
         update_generic_linux "${!generic_var}" "${version}"
         update_amazon_linux "${!al_var}" "${version}"
         update_amazon_linux_2023 "${!al2023_var}" "${version}"
+        update_amazon_linux_2027 "${!al2027_var}" "${version}"
     fi
 done
 
@@ -158,6 +178,15 @@ if [ ! -z "${CORRETTO_8_AMAZON_LINUX_2023}" ]; then
     ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2023/Dockerfile
 fi
 
+if [ ! -z "${CORRETTO_8_AMAZON_LINUX_2027}" ]; then
+    jdk_version=$(echo ${CORRETTO_8_AMAZON_LINUX_2027} | cut -d'.' -f2)
+    jdk_build=$(echo ${CORRETTO_8_AMAZON_LINUX_2027} | cut -d'.' -f3)
+    corretto_version=$(echo ${CORRETTO_8_AMAZON_LINUX_2027} | cut -d'.' -f4)
+
+    ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jre/al2027/Dockerfile
+    ${SED} "s/ARG version=.*/ARG version=1.8.0_${jdk_version}.b${jdk_build}-${corretto_version}/g" ./8/jdk/al2027/Dockerfile
+fi
+
 find . -name "*.bkp" | xargs rm -rf
 
 python3 bin/apply-template.py
@@ -172,7 +201,8 @@ for version in ${VERSIONS}; do
     al_var="CORRETTO_${version}_AMAZON_LINUX"
     alpine_var="CORRETTO_${version}_ALPINE"
     al2023_var="CORRETTO_${version}_AMAZON_LINUX_2023"
-    verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}|${!al2023_var}"
+    al2027_var="CORRETTO_${version}_AMAZON_LINUX_2027"
+    verify_update "${version}" "${!generic_var}|${!al_var}|${!alpine_var}|${!al2023_var}|${!al2027_var}"
 done
 
 if [[ -n "${WARNING_MSG}" ]]; then
