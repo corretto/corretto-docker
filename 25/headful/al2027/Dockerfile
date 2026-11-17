@@ -1,7 +1,7 @@
 FROM amazonlinux:2027
 
-ARG version=25.0.5.0.10-1
-ARG resource_version=25.0.5.0.10
+ARG version=25.0.5.1.2-1
+ARG resource_version=25.0.5.1.2
 ARG package_version=1
 
 RUN set -eux \
