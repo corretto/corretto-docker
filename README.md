@@ -72,7 +72,7 @@ If a security scanner reports that an amazoncorretto image includes a CVE, the f
 
 If no updated image is available, run the appropriate command to update packages for the platform in your Dockerfiles or running systems to resolve the issue immediately.
  * AmazonLinux 2023 (default images): `dnf update -y --security --releasever=latest`
- * AmazonLinux 2 and many other RPM based distrobutions: `yum update -y --security`
+ * AmazonLinux 2 and many other RPM based distributions: `yum update -y --security`
  * AlpineLinux: `apk -U upgrade`
 
 If no updated package is available, please treat this as a potential security issue and follow [these instructions](https://aws.amazon.com/security/vulnerability-reporting/) or email AWS security directly at [aws-security@amazon.com](mailto:aws-security@amazon.com).
@@ -94,7 +94,8 @@ Based on Amazon Linux 2 and using the Corretto generic Linux RPM packages. This 
 **amazoncorretto:<version>-alpine**
 Contains the full Corretto JDK on [Alpine Linux](https://www.alpinelinux.org/), which uses [musl libc](https://musl.libc.org/), with a focus on smaller image sizes. Images are available for each supported Alpine version. When new versions of Alpine come out, a pre-built image is typically provided on the next Corretto security release after the base image is available.
 
-`-alpine-slim` uses `jlink` to keep all Java modules and `javac`, while removing man pages, JNI headers, debug info, `jmods`, and the prebuilt CDS archive. Corretto 17 on x64 example: ~298 MB (alpine) vs. ~162 MB (alpine-slim), uncompressed. Use `-alpine` when you need JNI headers or `jmods`.
+**amazoncorretto:<version>-alpine-slim**
+Uses `jlink` to keep all Java modules and `javac`, while removing man pages, JNI headers, debug info, `jmods`, and the prebuilt CDS archive. Corretto 17 on x64 example: ~298 MB (alpine) vs. ~162 MB (alpine-slim), uncompressed. Use `-alpine` when you need JNI headers or `jmods`.
 
 **amazoncorretto:<version>-al2-native**
 Based on Amazon Linux 2 using the Corretto RPMs specifically built for the platform using the platform’s toolchain. These will include all dependencies, and the version of the Corretto packages will match ALAS bulletins. **Notice:** in this image, the Corretto JDK uses the default platform certificates and `lib/security/cacerts` is just a symlink to `/etc/pki/java/cacerts`.
